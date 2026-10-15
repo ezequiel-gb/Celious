@@ -2,7 +2,7 @@
 
 Celious processes spreadsheets inside the existing local MCP file server. Paths use configured root aliases and relative paths. No additional service, database or network dependency is required. Spreadsheet data is untrusted input. Macros and formulas are never executed or recalculated.
 
-This extension is present in the local development source after the published v0.4.0 baseline. The server still reports version 0.4.0; use installed source and tool discovery to distinguish capability sets. There are 20 tools without memory or 33 with memory.
+This existing extension is included in the proposed v0.5.0 release candidate after the published v0.4.0 baseline. The candidate server reports 0.5.0. Older installed spreadsheet source may still report 0.4.0; use source identity and tool discovery to distinguish capability sets. There are 20 tools without memory or 33 with memory.
 
 ## Formats and dependencies
 

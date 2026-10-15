@@ -18,7 +18,7 @@ def invoke(fn, *args, **kwargs):
         raise ToolError('File or folder unavailable. Check the relative path and local permissions.') from None
 
 files = Files()
-mcp = MCPServer('Celious Files', version='0.4.0', instructions=(
+mcp = MCPServer('Celious Files', version='0.5.0', instructions=(
     'Archive only under the single configured archive_root returned by memory_projects; '
     'project folders belong inside it. Never invent another archive location or create '
     'Conversation Archives folders under Sources/Knowledge. Archive supplied conversations '

@@ -1,5 +1,13 @@
 # Release validation
 
+## Proposed v0.5.0 release candidate
+
+The candidate follows stabilisation commit `e3e40a7`. Its only application-source change from that baseline is the server version identifier, now 0.5.0. File/spreadsheet operations, memory layout version 4, dependencies and upgrade behavior are unchanged. Documentation distinguishes candidate, published and installed states and removes stale installer-status statements.
+
+The final candidate must be committed before acceptance. Record its commit/tree and package checksum in a separate validation record, then keep source fixed while running: all service tests, eight package/compatibility cases, standalone file and memory protocols, real fresh/public-v0.2/pinned-v0.3 installers, locked-dependency checks, installed-test matching, documentation links and package/history privacy. The expected public-fixture count is 71 passed and one unavailable-private-fixture skip across 72 unique unit cases; repeated installer executions are not extra cases. These are expected counts until execution is recorded.
+
+Passing earlier source does not certify this exact candidate. Hosted CI, another account, production GUI/startup and actual deployment remain separate acceptance gates. No remote publication or production action is implied. The dated sections below are executed pre-candidate evidence, not a self-certifying candidate result.
+
 ## Stabilisation verification — 15 October 2026
 
 The stabilisation branch follows documentation baseline `e4349c5`. Changes are limited to legacy launcher identity resolution, source-matched service tests during reviewed upgrades, safe isolated file-protocol acceptance, an actionable missing-lock refusal and related tests/documentation. The requirements and lock are unchanged. No operational deployment or new capability is implied.

@@ -1,6 +1,6 @@
 # What Celious Files is and how it works
 
-Celious connects ChatGPT to selected Windows folders, structured spreadsheet operations and optional evidence-backed project memory. This guide describes the development source based on published v0.4.0 plus the local spreadsheet extension; the server version identifier is still 0.4.0.
+Celious connects ChatGPT to selected Windows folders, structured spreadsheet operations and optional evidence-backed project memory. This guide describes the proposed v0.5.0 release candidate, based on published v0.4.0 plus the existing spreadsheet extension and compatibility corrections. The candidate server reports 0.5.0; memory retains layout version 4.
 
 Celious Files lets you use ChatGPT to work with files in folders you explicitly select on your Windows computer. You can ask for a document summary, a file search, an edited note, a new folder or a recoverable deletion. The assistant chooses tools, while local software performs permitted operations on disk.
 
@@ -140,12 +140,12 @@ Status is specific to the tested source and environment. Existing code alone doe
 | Project memory and evidence | Implemented; project/legacy suites and independent-process protocol retrieval | Bounded lexical retrieval; supplied evidence does not prove external truth |
 | Supervised archive workflow | Implemented; preview/digest, Inbox, conflict and recovery tests | Approval binds the exact plan; raw writes bypass coordination |
 | Tray and tunnel lifecycle | Implemented; lifecycle tests and historical Windows acceptance | Live account permissions and connector refresh require environment-specific checks |
-| Installation and source upgrades | Implemented; published-baseline fresh/v0.2/v0.3 matrix verified historically | The complete installer matrix has not been rerun for the spreadsheet extension |
+| Installation and source upgrades | Implemented; fresh/v0.2/v0.3 matrix passed for stabilised spreadsheet source | Exact candidate checks are recorded separately; hosted CI and production cutover need their own acceptance |
 | General task orchestration | Not implemented as a Celious subsystem | Client-directed tool sequences have no durable task queue |
 | Scheduler, autonomous workers and agent bridge | Not implemented | No execution service or worker permission model is supplied |
 | Semantic retrieval and automatic history import | Not implemented | No embeddings, inference dependency or hidden-chat importer |
 
-There is no approved feature backlog implied by this table. Proposed next work is to complete integration acceptance and the current-source installation/upgrade matrix, then evaluate retrieval against synthetic relevance examples before proposing code changes. Any retrieval, execution or scheduling enhancement needs a separately approved scope, failure/recovery design and acceptance criteria.
+The candidate consolidates existing file, spreadsheet and project-memory behavior. No approved feature backlog is implied by this table. Remaining release steps are exact-candidate validation, hosted CI after an authorized push, explicit publication review and separately authorized production acceptance. Further implementation requires its own approved scope and acceptance criteria.
 
 Development follows: investigate, verify, identify a gap, propose a solution, approve scope, implement, test, document and obtain release approval. Local development approval does not authorize publication, production deployment or unrelated enhancements. Private comparisons and operational reports stay outside the repository.
 

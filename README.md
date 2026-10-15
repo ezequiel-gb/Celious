@@ -1,6 +1,6 @@
 # Celious Files for Windows
 
-Celious Files connects ChatGPT to selected local folders through an MCP file server and an outbound OpenAI Secure MCP Tunnel. A Windows tray switch starts and stops the connection without a terminal. Published baseline: v0.4.0. This development source also includes the spreadsheet extension; it is not a new published release. The server version identifier remains 0.4.0.
+Celious Files connects ChatGPT to selected local folders through an MCP file server and an outbound OpenAI Secure MCP Tunnel. A Windows tray switch starts and stops the connection without a terminal. Published baseline: v0.4.0. This local release candidate proposes v0.5.0 for the existing spreadsheet extension and compatibility corrections. The candidate server reports 0.5.0; no v0.5.0 publication or deployment is implied.
 
 ## Second Brain extension
 

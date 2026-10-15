@@ -1,4 +1,4 @@
-# Celious project memory v0.4.0
+# Celious project memory — layout version 4
 
 This is the current upgrade, archive and retrieval guide. Celious physically separates project memory while preserving original evidence and the existing file policy, tray, credentials and tunnel. No background observer, worker, model API call, new dependency, extra plugin or authorized root is added.
 
@@ -210,6 +210,6 @@ Run test_second_brain.py, test_project_memory.py, test_memory_protocol.py and or
 
 The current protocol test advertises 33 tools and invokes all 13 memory endpoints through initialization, project creation, identification, queue/resolve/reject, archive/commit/search, supersession, inspection and rebuild. A fresh second MCP process retrieves persisted project memory. It uses no real key/tunnel. Actual ChatGPT discovery/triggers require live checks; unit tests do not establish universal model autonomy.
 
-test_installation.py runs real setup in disposable fresh, public-v0.2 and pinned-v0.3 installations with fresh isolated environments, checksum-verified client downloads and pip check. It checks fresh opt-in/off 33/20 discovery, reviewed empty initialization, installation of the pinned public baseline, reviewed source upgrade, preserved config/profile/files and synthetic legacy migration/workflow preservation. No production roots, credentials or shortcuts are used. Git must contain the pinned baseline; CI fetches full history. Run package.py before test_package.py. The complete current-source installer matrix has not been rerun for the spreadsheet extension. See VALIDATION.md for commit-specific historical and current evidence.
+test_installation.py runs real setup in disposable fresh, public-v0.2 and pinned-v0.3 installations with fresh isolated environments, checksum-verified client downloads and pip check. It checks fresh opt-in/off 33/20 discovery, reviewed empty initialization, installation of the pinned public baseline, reviewed source upgrade, preserved config/profile/files and synthetic legacy migration/workflow preservation. No production roots, credentials or shortcuts are used. Git must contain the pinned baseline; CI fetches full history. Run package.py before test_package.py. The stabilised spreadsheet source passed this complete matrix. Exact release-candidate results are recorded against their source commit; see VALIDATION.md for the procedure, historical evidence and verification limits.
 
 Official references: [MCP instructions/tool metadata and testing](https://developers.openai.com/plugins/build/mcp-server), [skills and model-selected activation](https://developers.openai.com/plugins/concepts/skills).

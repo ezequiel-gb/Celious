@@ -2,7 +2,7 @@
 
 This guide takes a new operator from an unconfigured Windows computer to a tested ChatGPT connection. Read [PROJECT-EXPLAINED.md](PROJECT-EXPLAINED.md) first for the purpose, architecture and limits.
 
-Published baseline: **v0.4.0**. This development source adds six spreadsheet tools and exposes 20 tools without memory. For a fresh 33-tool Second Brain use setup.py --second-brain, then review/commit initialization as documented in [PROJECT-MEMORY.md](PROJECT-MEMORY.md). That guide also gives the complete public-v0.2/private-v0.3 upgrade, including engine.py, and separate OFF-CLI versus ON-MCP migration sequences. Do not use --replace-config as a source-upgrade shortcut.
+Published baseline: **v0.4.0**; this is the proposed **v0.5.0 release candidate**. This source includes six spreadsheet tools and exposes 20 tools without memory. For a fresh 33-tool Second Brain use setup.py --second-brain, then review/commit initialization as documented in [PROJECT-MEMORY.md](PROJECT-MEMORY.md). That guide also gives the complete public-v0.2/private-v0.3 upgrade, including engine.py, and separate OFF-CLI versus ON-MCP migration sequences. Do not use --replace-config as a source-upgrade shortcut.
 
 All commands below are for **Command Prompt**, unless stated otherwise. Do not paste your API secret into commands, ChatGPT, screenshots, GitHub or these documents. The setup command needs a tunnel ID; the secret belongs only in Celious's masked input window.
 
