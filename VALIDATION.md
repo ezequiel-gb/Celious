@@ -1,6 +1,22 @@
 # Release validation
 
-## Current v0.4 release candidate
+## Current development verification — 15 October 2026
+
+The inspected implementation is spreadsheet commit `6fdf2f2`, based on published v0.4.0 at `da20c3c`. The documentation consolidation changes no application source or runtime configuration. The spreadsheet extension is local development, not a newly published release; the server version identifier remains 0.4.0. Current discovery is 20 tools without memory and 33 with memory.
+
+- All **64 service unit tests passed** on Windows/Python 3.12.14 using disposable roots. This includes all 20 spreadsheet cases and real calls to all six spreadsheet tools through a copied server. The available private-baseline migration case also ran; public environments without that fixture retain the expected skip. No private fixture is included in source.
+- The separate memory protocol check passed across two independent copied-server MCP sessions: 33 tools advertised, all 13 memory endpoints exercised, exact approval rejection/commit, project/shared/cross retrieval, queue resolution/rejection, supersession, integrity, rebuild and persisted fresh-session retrieval. Expected error responses test refusal paths; they are not suite failures.
+- Initial sandbox execution blocked hard-link fixture creation and stalled local asyncio protocol startup. The isolated tests were rerun outside that sandbox and passed; the initial partial run is not counted as another successful suite.
+- The live connector exposed the six spreadsheet schemas. Read-only inspection and a bounded spreadsheet read succeeded. Live mutation operations, another account's access and automatic model invocation were not tested by this review. Operational inputs and results remain private.
+- Published-baseline installation and hosted evidence below is historical. The full fresh/v0.2/v0.3 installer matrix has **not** been rerun for the spreadsheet extension. There is no new hosted CI, tag, release or deployment implied by these local checks.
+
+Documentation links, public source privacy and tracked package membership are checked separately during consolidation. Application files and private project data are preserved. Installed source can differ from release source; source-only tests do not certify every deployed component.
+
+## Published v0.4.0 baseline
+
+The final publication record identifies merge/tag commit `da20c3c`. Its [main Windows run](https://github.com/ezequiel-gb/Celious/actions/runs/38495304393) and [tag Windows run](https://github.com/ezequiel-gb/Celious/actions/runs/38495727487) passed before publication of [v0.4.0](https://github.com/ezequiel-gb/Celious/releases/tag/v0.4.0). These are recorded release results, not new network checks performed during this documentation review. The following dated sections retain the earlier candidate and implementation evidence; statements about pending promotion describe their historical stage.
+
+## Historical v0.4 release candidate
 
 The readiness correction adds explicit memory opt-in (no silent initialization), reviewed public-baseline source upgrade, conditional WORKFLOW creation, package manifest/privacy/integrity checks and real disposable installer coverage. Local acceptance and fresh hosted results are recorded below. The older v0.2 clean-install/runner evidence is labelled historical.
 

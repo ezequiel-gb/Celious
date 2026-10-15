@@ -26,8 +26,8 @@ Review logs locally before sharing: paths and account metadata may appear even w
 
 | Symptom | Check and action |
 | --- | --- |
-| Only 14 tools | Memory is opt-in. Inspect private config for second_brain; use --second-brain on fresh setup or reviewed upgrade --enable-memory. Restart/refresh discovery. Do not replace existing roots/config with an example. |
-| 27 tools but project/layout unavailable | Tools enabled is not initialized. Review plan-migrate/commit while OFF, or use the ON/refresh-first MCP sequence in PROJECT-MEMORY.md. |
+| Only 20 tools | Memory is opt-in in the spreadsheet development source. A published v0.4.0 installation without spreadsheets exposes 14. Inspect private config for second_brain; use --second-brain on fresh setup or reviewed upgrade --enable-memory. Restart/refresh discovery. Do not replace existing roots/config with an example. |
+| 33 tools but project/layout unavailable | Tools enabled is not initialized. Review plan-migrate/commit while OFF, or use the ON/refresh-first MCP sequence in PROJECT-MEMORY.md. |
 | Migration says already initialized | LAYOUT.md is version 4. Do not rerun; list projects, inspect and retrieve instead. |
 | Upgrade requires OFF or rejects busy state | Stop actual clients for that installation/tunnel; do not edit tray-status.json to bypass the guard. --connection-off is your acknowledgement, not a stop command. |
 | Upgrade rejects dependency lock or customized code | Do not bypass it. Review dependencies/environment and customized module diffs separately; the helper is a source overlay for compatible locks. |
@@ -36,6 +36,8 @@ Review logs locally before sharing: paths and account metadata may appear even w
 | Unexpected project results | Verify the real project_id, include_shared and cross_project flags; defaults are Celious plus shared. Search is lexical OR matching. |
 | Pending/conflicting knowledge | Review original evidence and uncertainty. Explicit supersession requires same project/topic/key and a reviewed non-provisional replacement; never silently promote a hypothesis. |
 | Missing or altered source/quote/index | Inspect and preserve evidence. memory_rebuild_preview repairs indexes only through reviewed commit; it cannot invent missing source truth. Restore intended damaged files from a verified consistent backup. |
+
+A current-source connection should expose six spreadsheet tool names plus the 14 filesystem tools, and 13 more when memory is enabled. An older v0.4.0 server exposes 14/27. If schemas stay stale, check installed source, restart through the normal operator procedure and refresh/reconnect the client. A schema listing alone does not prove successful invocation.
 
 ## Complete rollback
 

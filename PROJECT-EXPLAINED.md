@@ -1,6 +1,6 @@
 # What Celious Files is and how it works
 
-Celious is our independent Windows implementation, inspired by the original Celia project. References to Celia in original materials and to components such as Celia Core describe that original project, not a claim that those components are installed here.
+Celious connects ChatGPT to selected Windows folders, structured spreadsheet operations and optional evidence-backed project memory. This guide describes the development source based on published v0.4.0 plus the local spreadsheet extension; the server version identifier is still 0.4.0.
 
 Celious Files lets you use ChatGPT to work with files in folders you explicitly select on your Windows computer. You can ask for a document summary, a file search, an edited note, a new folder or a recoverable deletion. The assistant chooses tools, while local software performs permitted operations on disk.
 
@@ -18,7 +18,7 @@ A Markdown vault adds durable context. Project notes, decisions and next actions
 | Celious Files plugin | Present the server's tools in a conversation | ChatGPT plugin configuration |
 | Secure MCP Tunnel | Transport requests between OpenAI and the local client | OpenAI tunnel plus local client |
 | tunnel-client | Run the private connection and invoke the MCP server | Windows background process |
-| Celious MCP server | Expose 14 file tools, plus 13 opt-in memory tools, and enforce file policy | Local Python process |
+| Celious MCP server | Expose 14 file tools, six spreadsheet tools and 13 opt-in memory tools; enforce file policy | Local Python process |
 | Celious tray switch | Start, check and stop the local connection | Windows icon and small control panel |
 | Projects and Vault | Store the files you authorise | Selected local directories |
 
@@ -65,11 +65,11 @@ You ask: “Use Celious Files to read Projects/Example/status.md and change the 
 
 The tray controls availability. ON starts the local tunnel and server. Hiding the panel leaves them running. OFF ends the connection; Exit also discards the tray's cached secret. Starting the icon at login leaves it OFF until you decide to connect.
 
-## What this release can do
+## What the current source can do
 
-The 14 filesystem tools cover listing, document/binary reads, search, direct writes/edits, folders, moves, recoverable deletion/restoration and proposals. v0.4 optionally adds 13 memory endpoints for separate project collections, cited retrieval, read-only candidates, Inbox review, exact authorized commits, supersession/history and recovery. Default setup keeps 14 tools; setup --second-brain enables 27 without silently initializing. Follow [PROJECT-MEMORY.md](PROJECT-MEMORY.md) for reviewed setup/upgrade/migration.
+The 14 filesystem tools cover listing, document/binary reads, search, direct writes/edits, folders, moves, recoverable deletion/restoration and proposals. v0.4 optionally adds 13 memory endpoints for separate project collections, cited retrieval, read-only candidates, Inbox review, exact authorized commits, supersession/history and recovery. Current development setup exposes 20 tools; setup --second-brain enables 33 without silently initializing. Follow [PROJECT-MEMORY.md](PROJECT-MEMORY.md) for reviewed setup/upgrade/migration.
 
-The server extracts text from PDF, DOCX, ODT and XLSX files and reads ordinary text/code files. It does not provide OCR or rich-document layout editing. Binary writes must contain valid bytes for the intended format. File write/read limits and format behaviour are in README.md.
+The server extracts text from PDF, DOCX, ODT, ODS and XLSX files and reads ordinary text/code files. Six dedicated tools add typed ODS/XLSX/CSV/TSV inspection, bounded reads/searches, controlled writes/edits and explicit data-only conversion. See [SPREADSHEETS.md](SPREADSHEETS.md) for parameter details and feature-loss acknowledgements. It does not provide OCR or rich-document layout editing. Binary writes must contain valid bytes for the intended format. File write/read limits and format behaviour are in README.md.
 
 There is no direct copy-file tool; a client could read and write permitted file contents within the size limits. Proposed changes remain pending until reviewed locally. For example, run `service\.venv\Scripts\python.exe service/review.py` to list pending requests, then rerun it with a request ID to review and explicitly apply or reject it.
 
@@ -81,9 +81,7 @@ These are application checks, not a separate Windows sandbox or independently au
 
 ## How this relates to the wider Celious project
 
-This v0.4 source release contains the file-access layer, starter vault, desktop switch and opt-in project-aware Second Brain. It does not contain Celia Core, Celia Engine, Miles, autonomous agent supervision, email processing, Git promotion workflows or the broader architecture in reference material. There is no universal chat monitor or guaranteed proactive tool activation. Installing this package does not reproduce a nine-workspace deployment.
-
-Those capabilities would require their own implementation, configuration and validation. The file-access layer can provide a useful foundation without claiming that the full ecosystem has been delivered.
+Published v0.4.0 contains the file-access layer, starter vault, desktop switch and opt-in project-aware Second Brain. The current development source adds spreadsheet processing. ChatGPT selects and sequences tool calls; the server does not persist general tasks, schedule workers, retrieve hidden conversation history or guarantee proactive tool activation. Memory transaction recovery applies to coordinated note updates, not arbitrary workflow execution.
 
 ## Developer map
 
@@ -93,6 +91,7 @@ Those capabilities would require their own implementation, configuration and val
 | upgrade.py | Reviewed compatible source overlay, private checkpoint, preservation and rollback; does not migrate notes |
 | service/engine.py | Root/path/file policy, document extraction, expected hashes, recoverable operations and private audit metadata |
 | service/server.py / memory_tools.py | MCP tool definitions/annotations, bounded errors and opt-in memory registration |
+| service/spreadsheets.py | Typed workbook parsing, bounded queries, data conversion, safe edits/writes and six spreadsheet tools |
 | service/second_brain.py | Portable metadata, evidence/legacy coordinator, locking/journals/recovery and current CLI |
 | service/project_memory.py | Project descriptors/layout, scoped records/search, reviewed migration, Inbox, candidates, supersession and indexes |
 | service/connect.py / tray_core.py / tray.py | Credential input, outbound tunnel, loopback readiness and hidden process-tree lifecycle |
@@ -124,6 +123,27 @@ ProjectBrain reuses file policy and the global cooperating-process lock. Plans b
 ### Safe extension procedure
 
 Use a dedicated source branch and disposable roots; never develop mutation tests against the live installation. Preserve existing tool names/arguments where feasible and explicitly document intentional compatibility changes such as unassigned legacy archive calls entering Inbox. Add meaningful policy/migration/workflow tests, update existing guides and package allowlist, and run the permanent PUBLISHING.md checklist. New dependencies, permissions, observers or credential behavior need deliberate design/review. Do not claim a feature tested merely because its code exists or an old CI run passed.
+
+## Capability status and development priorities
+
+Status is specific to the tested source and environment. Existing code alone does not establish operational availability. The published baseline has 14/27 tools; this development source has 20/33 with memory disabled/enabled. [VALIDATION.md](VALIDATION.md) separates historical release evidence from current checks.
+
+| Capability | Status and evidence | Practical limit |
+| --- | --- | --- |
+| Filesystem access and recovery | Implemented; disposable filesystem and protocol checks are available | Authorized roots only; recoverable deletion can fail across volumes |
+| Document extraction | Implemented; synthetic format tests cover extraction | Text extraction, no OCR or rich-layout editing |
+| Spreadsheet operations | Implemented; dedicated suite invokes all six tools through copied-server MCP sessions | Bounded workbooks; conversion is data-only; XLS unsupported; no calculation |
+| Project memory and evidence | Implemented; project/legacy suites and independent-process protocol retrieval | Bounded lexical retrieval; supplied evidence does not prove external truth |
+| Supervised archive workflow | Implemented; preview/digest, Inbox, conflict and recovery tests | Approval binds the exact plan; raw writes bypass coordination |
+| Tray and tunnel lifecycle | Implemented; lifecycle tests and historical Windows acceptance | Live account permissions and connector refresh require environment-specific checks |
+| Installation and source upgrades | Implemented; published-baseline fresh/v0.2/v0.3 matrix verified historically | The complete installer matrix has not been rerun for the spreadsheet extension |
+| General task orchestration | Not implemented as a Celious subsystem | Client-directed tool sequences have no durable task queue |
+| Scheduler, autonomous workers and agent bridge | Not implemented | No execution service or worker permission model is supplied |
+| Semantic retrieval and automatic history import | Not implemented | No embeddings, inference dependency or hidden-chat importer |
+
+There is no approved feature backlog implied by this table. Proposed next work is to complete integration acceptance and the current-source installation/upgrade matrix, then evaluate retrieval against synthetic relevance examples before proposing code changes. Any retrieval, execution or scheduling enhancement needs a separately approved scope, failure/recovery design and acceptance criteria.
+
+Development follows: investigate, verify, identify a gap, propose a solution, approve scope, implement, test, document and obtain release approval. Local development approval does not authorize publication, production deployment or unrelated enhancements. Private comparisons and operational reports stay outside the repository.
 
 ## Installation and project status
 

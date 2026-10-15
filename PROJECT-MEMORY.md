@@ -32,7 +32,7 @@ Sources preserves accessible text, completeness/reference and body SHA-256. Know
 
 ## Fresh installation and reviewed initialization
 
-Commands are for Command Prompt from the extracted source folder. Follow INSTALLATION-A-TO-Z.md for prerequisites, account/tunnel access and private key handling. Default setup retains 14 filesystem tools. To opt into 27 tools:
+Commands are for Command Prompt from the extracted source folder. Follow INSTALLATION-A-TO-Z.md for prerequisites, account/tunnel access and private key handling. Current development setup has 14 filesystem and six spreadsheet tools (20 total). To opt into 33 tools:
 
 ```bat
 py -3.12 setup.py --tunnel-id YOUR_TUNNEL_ID --second-brain --shortcuts
@@ -86,7 +86,7 @@ Next change directory to the EXISTING installation, run its Python `-m pip check
 
 Migration uses journaled copy-and-redirect writes. Original source/knowledge/history files are preserved byte-for-byte in the selected project. Old paths become navigation-only redirects, excluded from knowledge scanning; they preserve previous citations/wiki links without duplicating facts. The layout marker activates last. Incomplete transactions block cooperating readers until recovery. Old-layout proposals remain private evidence but cannot be replayed.
 
-Memory disabled exposes the original 14 tools. Enabled v0.4 exposes **27 tools: 14 file tools and 13 memory endpoints**. No separate tunnel is created. Fresh installations use Archives with project folders directly inside it. Existing configured memory paths/layouts remain compatible; do not move them by hand. memory_projects reports the authoritative archive_root. A source upgrade preserves the configured location rather than silently relocating existing records.
+In this development source, memory disabled exposes **20 tools: 14 file tools and six spreadsheet tools**. Enabled memory exposes **33 tools**, adding 13 memory endpoints. The published v0.4.0 baseline exposed 14/27; its package does not include the spreadsheet extension. No separate tunnel is created. Fresh installations use Archives with project folders directly inside it. Existing configured memory paths/layouts remain compatible; do not move them by hand. memory_projects reports the authoritative archive_root. A source upgrade preserves the configured location rather than silently relocating existing records.
 
 ## Retrieval
 
@@ -198,14 +198,14 @@ service\.venv\Scripts\python.exe service/second_brain.py recover
 
 Other CLI commands: plan-project, plan-archive (private JSON with explicit project_id), plan-supersede, plan-rebuild, identify (accessible text file), inbox, reject and exact digest commit. Config/runtime/root/prefix overrides precede the subcommand for isolated use. Keep private inputs outside source control.
 
-Open the canonical folder as an Obsidian vault when installed. Relative wiki links, project/global indexes and legacy redirects keep navigation portable. No plugin, sync service or hidden settings are required. Actual app navigation is a separate acceptance check. A private read-only GUI snapshot was tested separately; its builder is not included in this public package.
+Open the canonical folder as an Obsidian vault when installed. Relative wiki links, project/global indexes and legacy redirects keep navigation portable. No plugin, sync service or hidden settings are required. Actual app navigation is a separate acceptance check. The public package requires no separate viewer.
 
 ## Verification
 
 Run test_second_brain.py, test_project_memory.py, test_memory_protocol.py and original file/tray checks only in isolated configured roots. Project tests cover A/B/shared routing, supervised queue/rejection, identification limitations, scoped/cross/shared retrieval, supersession/history, exact plans, index repair, stale descriptors, interruptions, rollback and actual private-baseline migration when available. Public CI uses synthetic fixtures; private-baseline tests explicitly skip when unavailable.
 
-The protocol test advertises 27 tools and invokes all 13 memory endpoints through initialization, project creation, identification, queue/resolve/reject, archive/commit/search, supersession, inspection and rebuild. A fresh second MCP process retrieves persisted project memory. It uses no real key/tunnel. Actual ChatGPT discovery/triggers require live checks; unit tests do not establish universal model autonomy.
+The current protocol test advertises 33 tools and invokes all 13 memory endpoints through initialization, project creation, identification, queue/resolve/reject, archive/commit/search, supersession, inspection and rebuild. A fresh second MCP process retrieves persisted project memory. It uses no real key/tunnel. Actual ChatGPT discovery/triggers require live checks; unit tests do not establish universal model autonomy.
 
-test_installation.py runs real setup in two disposable folders with fresh isolated environments, checksum-verified client downloads and pip check. It checks fresh opt-in/off 27/14 discovery, reviewed empty initialization, installation of the pinned public baseline, reviewed source upgrade, preserved config/profile/files and synthetic legacy migration/workflow preservation. No production roots, credentials or shortcuts are used. Git must contain the pinned baseline; CI fetches full history. Run package.py before test_package.py. See VALIDATION.md for local evidence and outstanding GitHub execution.
+test_installation.py runs real setup in disposable fresh, public-v0.2 and pinned-v0.3 installations with fresh isolated environments, checksum-verified client downloads and pip check. It checks fresh opt-in/off 33/20 discovery, reviewed empty initialization, installation of the pinned public baseline, reviewed source upgrade, preserved config/profile/files and synthetic legacy migration/workflow preservation. No production roots, credentials or shortcuts are used. Git must contain the pinned baseline; CI fetches full history. Run package.py before test_package.py. The complete current-source installer matrix has not been rerun for the spreadsheet extension. See VALIDATION.md for commit-specific historical and current evidence.
 
 Official references: [MCP instructions/tool metadata and testing](https://developers.openai.com/plugins/build/mcp-server), [skills and model-selected activation](https://developers.openai.com/plugins/concepts/skills).

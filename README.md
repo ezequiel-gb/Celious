@@ -1,14 +1,12 @@
 # Celious Files for Windows
 
-Celious is an independent Windows implementation, inspired by the original Celia project. References to Celia in original materials and to components such as Celia Core describe that original project, not a claim that those components are installed here.
-
-Celious Files connects ChatGPT to selected local folders through an MCP file server and an outbound OpenAI Secure MCP Tunnel. A Windows tray switch starts and stops the connection without a terminal. Source release: 0.4.0.
+Celious Files connects ChatGPT to selected local folders through an MCP file server and an outbound OpenAI Secure MCP Tunnel. A Windows tray switch starts and stops the connection without a terminal. Published baseline: v0.4.0. This development source also includes the spreadsheet extension; it is not a new published release. The server version identifier remains 0.4.0.
 
 ## Second Brain extension
 
-Version 0.4.0 adds physical project collections, stable project identities, explicit project/shared/cross-project retrieval, supervised Inbox routing and quote-backed candidate identification. It preserves v0.3.0 evidence, decision history and recovery. [Project memory setup, migration and limits](PROJECT-MEMORY.md). Existing configurations without memory retain the original 14 tools; enabled memory exposes 13 endpoints (27 tools total) on the same service/tunnel. Identification depends on model/tool invocation; no continuous monitor, paid model API calls or background workers are added.
+Version 0.4.0 adds physical project collections, stable project identities, explicit project/shared/cross-project retrieval, supervised Inbox routing and quote-backed candidate identification. It preserves v0.3.0 evidence, decision history and recovery. [Project memory setup, migration and limits](PROJECT-MEMORY.md). This development source exposes 14 filesystem tools plus six spreadsheet tools (20 total); opt-in memory adds 13 endpoints (33 total) on the same service/tunnel. Identification depends on model/tool invocation; no continuous monitor, paid model API calls or background workers are added.
 
-The default single memory home is Projects/Archives, with project folders directly inside it. Existing explicitly configured roots/layouts remain compatible. Fresh setup: use setup.py --second-brain, then separately review and commit initialization. Existing public v0.2/private v0.3 installations: use the reviewed upgrade.py overlay from a separate source folder, with a verified full backup and actual connection OFF; the engine update is included. [Complete commands and sequencing](PROJECT-MEMORY.md#fresh-installation-and-reviewed-initialization). The public source does not include private notes, reports or the optional private GUI snapshot builder.
+The default single memory home is Projects/Archives, with project folders directly inside it. Existing explicitly configured roots/layouts remain compatible. Fresh setup: use setup.py --second-brain, then separately review and commit initialization. Existing public v0.2/private v0.3 installations: use the reviewed upgrade.py overlay from a separate source folder, with a verified full backup and actual connection OFF; the engine update is included. [Complete commands and sequencing](PROJECT-MEMORY.md#fresh-installation-and-reviewed-initialization). The public source does not include private notes, reports or operational data.
 
 ## Spreadsheet processing
 
@@ -28,13 +26,13 @@ ODS, XLSX, CSV and TSV have typed, bounded inspection, reading, search, controll
 
 Your **ChatGPT Plus subscription** pays for ChatGPT access, with its normal usage limits. **OpenAI Platform** is where you manage the tunnel connecting ChatGPT to your computer. The **API key** is a private access credential for that connection: creating it is not a credit purchase or a new subscription. Celious uses it for tunnel authentication, not to buy AI responses. ChatGPT and paid model API usage have [separate billing](https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform).
 
-**What remains uncertain:** the [official tunnel guide](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) and [API pricing page](https://developers.openai.com/api/docs/pricing), checked on 13 October 2026, do not give a tunnel-specific creation/operation tariff or an explicit zero-charge guarantee. We therefore cannot promise that OpenAI's tunnel service is unconditionally free for every account or forever. This is not evidence that you need to buy API credits.
+**What remains uncertain:** the [official tunnel guide](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) and [API pricing page](https://developers.openai.com/api/docs/pricing), checked on 13 October 2026, do not give a tunnel-specific creation/operation tariff or an explicit zero-charge guarantee. The available evidence does not establish that OpenAI's tunnel service is unconditionally free for every account or forever. This is not evidence that you need to buy API credits.
 
 **Before installing:** check that your account offers the custom tunnel connection and the read/write actions you need. Current official guidance does not establish full Celious read/write access for every personal Plus account. Buying credits does not establish that permission. See the guide's [costs, keys and Plus access explanation](INSTALLATION-A-TO-Z.md#costs-keys-and-chatgpt-plus-access), including how to check billing without making a purchase.
 
-## Start here
+## Installation at a glance
 
-**Start here if you have never used Celious:** [Follow the complete installation guide](INSTALLATION-A-TO-Z.md). It explains how to download this repository, prepare Windows, create your own OpenAI tunnel and key, enter the key privately, connect ChatGPT and verify every file operation. No knowledge of this project's development history is required.
+**If you have never used Celious:** [Follow the complete installation guide](INSTALLATION-A-TO-Z.md). It explains how to download this repository, prepare Windows, create your own OpenAI tunnel and key, enter the key privately, connect ChatGPT and verify every file operation. No knowledge of this project's development history is required.
 
 Read [Project explained](PROJECT-EXPLAINED.md) for the purpose and components. You need a Windows x64 computer, Python 3.12 and the account permissions described above. You do not need Git, Codex or n8n.
 
@@ -46,11 +44,11 @@ Read [Project explained](PROJECT-EXPLAINED.md) for the purpose and components. Y
 | Understand access and recovery | [Security boundaries](SECURITY.md) |
 | Review actual verification | [Validation record](VALIDATION.md) |
 
-The rest of this README is the shorter technical overview.
+The rest of this README is a compact installation and operation reference. [Architecture, capability status and development priorities](PROJECT-EXPLAINED.md#capability-status-and-development-priorities) distinguish current source from release evidence.
 
 Download this public repository from **Code → Download ZIP**, extract it, and follow the A-to-Z guide. [Repository](https://github.com/ezequiel-gb/Celious).
 
-This repository contains the file server, Markdown vault starter and tray controller. Celia Core, Celia Engine, Miles, autonomous agents, arbitrary command execution, Git tooling and nine-workspace configurations are outside this implementation.
+This repository contains the file server, spreadsheet processing, Markdown vault starter, opt-in project memory and tray controller. It does not provide autonomous workers, task scheduling, arbitrary command execution or repository automation.
 
 ## Repeatable installation
 
@@ -87,7 +85,7 @@ service\.venv\Scripts\python.exe service/test_tray.py
 service\.venv\Scripts\python.exe service/tray.py --self-test
 ```
 
-These cover the filesystem/tray foundation. For the complete current test organisation, see VALIDATION.md and PUBLISHING.md: legacy/project memory, all 13 memory endpoints, package privacy/integrity and real disposable fresh-install/pinned-v0.2/v0.3 upgrades are also included. Public fixtures yield 46 passing unit tests and one intentional private-backup skip; installer scenarios repeat relevant suites. No real API key is needed. CI uses dummy IDs, not account connections or secrets.
+These cover the filesystem/tray foundation. For the complete current test organisation, see VALIDATION.md and PUBLISHING.md: legacy/project memory, all 13 memory endpoints, package privacy/integrity and real disposable fresh-install/pinned-v0.2/v0.3 upgrades are also included. The published v0.4.0 baseline recorded 46 passing public unit tests and one intentional private-backup skip. The spreadsheet extension has separate validation; see VALIDATION.md for source-specific evidence and limitations. Installer scenarios repeat relevant suites. No real API key is needed. CI uses dummy IDs, not account connections or secrets.
 
 The installer uses requirements.lock.txt, which records the tested direct and transitive Python dependency versions. requirements.txt describes the six direct dependencies for future deliberate upgrades. Python patch versions, package hashes and the Windows runner image are not frozen; this is a repeatable installation recipe rather than a byte-identical build. See [VALIDATION.md](VALIDATION.md) for the release's actual verification results.
 
@@ -101,7 +99,7 @@ ChatGPT -> OpenAI tunnel -> hidden tunnel-client -> stdio MCP server -> authoris
 
 The server supports directory listing, text/document extraction, search, paginated base64 reads, UTF-8/base64 writes, exact-text edits, folder creation, moves, recoverable deletion and restoration. Optional proposed changes can be reviewed locally using `service/review.py`.
 
-PDF, DOCX, ODT and XLSX reads extract content; they are not OCR or full document-layout editors. Overwriting a rich document should use a valid binary payload. Writes are limited to 10 MB per call. Paths must be relative to a configured root alias. Root deletion, traversal, hidden paths, Windows special paths, symlinks, junctions and hard-linked files are blocked by application policy.
+PDF, DOCX, ODT, ODS and XLSX reads extract content; they are not OCR or full document-layout editors. Overwriting a rich document should use a valid binary payload. Writes are limited to 10 MB per call. Paths must be relative to a configured root alias. Root deletion, traversal, hidden paths, Windows special paths, symlinks, junctions and hard-linked files are blocked by application policy.
 
 Backups, trash and metadata logs are private local files under `service/.runtime`. Recovery is provided through `restore_deleted`; nonempty-folder deletion requires `recursive=true`. Moving items into recovery storage requires the same volume; a root on a different drive can therefore be read/written but deletion may fail. Test this before depending on recovery across drive boundaries.
 

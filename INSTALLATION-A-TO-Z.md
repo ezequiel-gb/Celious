@@ -2,7 +2,7 @@
 
 This guide takes a new operator from an unconfigured Windows computer to a tested ChatGPT connection. Read [PROJECT-EXPLAINED.md](PROJECT-EXPLAINED.md) first for the purpose, architecture and limits.
 
-Current source release: **v0.4.0**. The base installer intentionally enables 14 file tools. For a fresh 27-tool Second Brain use setup.py --second-brain, then review/commit initialization as documented in [PROJECT-MEMORY.md](PROJECT-MEMORY.md). That guide also gives the complete public-v0.2/private-v0.3 upgrade, including engine.py, and separate OFF-CLI versus ON-MCP migration sequences. Do not use --replace-config as a source-upgrade shortcut.
+Published baseline: **v0.4.0**. This development source adds six spreadsheet tools and exposes 20 tools without memory. For a fresh 33-tool Second Brain use setup.py --second-brain, then review/commit initialization as documented in [PROJECT-MEMORY.md](PROJECT-MEMORY.md). That guide also gives the complete public-v0.2/private-v0.3 upgrade, including engine.py, and separate OFF-CLI versus ON-MCP migration sequences. Do not use --replace-config as a source-upgrade shortcut.
 
 All commands below are for **Command Prompt**, unless stated otherwise. Do not paste your API secret into commands, ChatGPT, screenshots, GitHub or these documents. The setup command needs a tunnel ID; the secret belongs only in Celious's masked input window.
 
@@ -21,7 +21,7 @@ All commands below are for **Command Prompt**, unless stated otherwise. Do not p
 
 OpenAI documents [separate ChatGPT/API billing](https://help.openai.com/en/articles/9039756-managing-billing-for-chatgpt-and-the-api-platform), [Plus usage limits](https://help.openai.com/en/articles/6950777-what-is-chatgpt-plus) and [app usage limits](https://help.openai.com/en/articles/11487775-connected-apps-in-chatgpt). Do not confuse this file connection with a different application that calls the model API or implements Sign in with ChatGPT plan sharing.
 
-### What we verified, concluded and could not establish
+### Verification, conclusions and unresolved questions
 
 Account/cost evidence was checked on **13 October 2026** for the published v0.2.0 file/tunnel path. v0.4 retains that path and adds no model API usage. These observations are historical account evidence, not a new billing audit or a guarantee for another account.
 
@@ -30,7 +30,7 @@ Account/cost evidence was checked on **13 October 2026** for the published v0.2.
 | Does Celious charge for installing or running its software? | **Verified in this project:** there is no software fee, payment screen, credit purchase or subscription mechanism. Your own computer/internet costs remain yours. |
 | Does Celious make paid model API calls? | **Verified by source review:** no model inference endpoint/client is called by the installer, file server or controller. The key is passed to the tunnel client, not to a model API. |
 | Does creating a key automatically buy AI usage? | **Reasonable conclusion from the credential-only workflow:** creating a credential is not purchasing credits or requesting a model response. Using it with a separately billable service is a different action. Keep its permissions limited to the tunnel. |
-| Are tunnel creation, authentication and operation definitely free? | **Unresolved:** the [tunnel guide](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) and [pricing page](https://developers.openai.com/api/docs/pricing) do not publish a tunnel-specific tariff or explicitly guarantee zero charges. We cannot conclusively classify tunnel traffic as billable or non-billable from those pages. Missing pricing is not a permanent free-service promise. |
+| Are tunnel creation, authentication and operation definitely free? | **Unresolved at the 13 October review:** the [tunnel guide](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) and [pricing page](https://developers.openai.com/api/docs/pricing) did not publish a tunnel-specific tariff or explicitly guarantee zero charges. That evidence does not conclusively classify tunnel traffic as billable or non-billable. Missing pricing is not a permanent free-service promise. |
 | Must I buy API credits or add a card? | **No purchase/card step is prescribed here.** The published tunnel prerequisites do not list prepaid credits or a payment method. That does not establish that every account can be provisioned without a billing requirement. If your account asks to activate billing, obtain tunnel-specific clarification before accepting; do not buy credits just to follow this guide. |
 | Which allowance does a Celious conversation use? | **Verified product distinction:** ChatGPT conversations remain subject to ChatGPT's allowances; app/provider limits may also apply. **Code-based conclusion:** Celious generates no API model-token usage to debit API credits. This does not settle the separate tunnel-pricing question above. |
 
@@ -164,7 +164,7 @@ If the required permission is absent, resolve it before connecting. Celious cann
 
 ## 7. Install the local software
 
-Choose ONE option before running setup. Options A/B create a file-only installation (14 tools). For the complete Second Brain installation, choose Option C instead. Do not run setup again over a configured installation to change its memory mode; use the reviewed existing-installation procedure in PROJECT-MEMORY.md.
+Choose ONE option before running setup. Options A/B create an installation without memory (20 tools, including spreadsheets). For the complete Second Brain installation, choose Option C instead. Do not run setup again over a configured installation to change its memory mode; use the reviewed existing-installation procedure in PROJECT-MEMORY.md.
 
 ### Option A: simplest installation with empty default folders
 
@@ -194,7 +194,7 @@ Open Command Prompt in the extracted folder as described in Option B. With defau
 py -3.12 setup.py --second-brain --shortcuts
 ```
 
-Enter only your tunnel ID when prompted. To use chosen folders, add the same --projects/--vault options as Option B; --startup remains optional. Expect dependency verification and Local installation ready. Memory tools are enabled, but no notes/layout are silently initialized. Keep the switch OFF and complete the reviewed local CLI initialization in PROJECT-MEMORY.md, or turn ON/connect/refresh first and use its MCP alternative. Continue sections 8–10 to enter the secret privately, install the ChatGPT connection and test file access; then complete the memory first-use test. A fresh --second-brain setup should expose 27 tools; a file-only setup exposes 14.
+Enter only your tunnel ID when prompted. To use chosen folders, add the same --projects/--vault options as Option B; --startup remains optional. Expect dependency verification and Local installation ready. Memory tools are enabled, but no notes/layout are silently initialized. Keep the switch OFF and complete the reviewed local CLI initialization in PROJECT-MEMORY.md, or turn ON/connect/refresh first and use its MCP alternative. Continue sections 8–10 to enter the secret privately, install the ChatGPT connection and test file access; then complete the memory first-use test. A fresh --second-brain setup should expose 33 tools; a setup without memory exposes 20.
 
 ### If installation fails
 
@@ -250,7 +250,7 @@ Do not test deletion with existing valuable files. Recovery data is not the Wind
 
 ## 11. Verify and record your installation
 
-For Second Brain, now follow [reviewed initialization and the complete first-use memory test](PROJECT-MEMORY.md#first-use-memory-test). Confirm 27 tools when enabled, actual project UUIDs, version 4, clean inspection, a reviewed synthetic project/archive and cited retrieval. The filesystem test above remains necessary; a successful memory search alone does not validate editing, recovery or OFF/ON behavior. These account/UI checks are manual; the installer cannot grant ChatGPT access or confirm which tools your model chose.
+For Second Brain, now follow [reviewed initialization and the complete first-use memory test](PROJECT-MEMORY.md#first-use-memory-test). Confirm 33 tools when enabled, actual project UUIDs, version 4, clean inspection, a reviewed synthetic project/archive and cited retrieval. The filesystem test above remains necessary; a successful memory search alone does not validate editing, recovery or OFF/ON behavior. These account/UI checks are manual; the installer cannot grant ChatGPT access or confirm which tools your model chose.
 
 Fill this table after testing. This is the evidence needed to call your installation ready.
 
@@ -261,7 +261,7 @@ Fill this table after testing. This is the evidence needed to call your installa
 | Roots | Actual Projects/Vault folders reviewed |
 | Connection | Green in the tray |
 | ChatGPT discovery | Celious Files selectable and tools available |
-| Optional Second Brain | 27 tools, reviewed initialized layout, clean inspection, synthetic project/archive and scoped source citation |
+| Optional Second Brain | 33 tools, reviewed initialized layout, clean inspection, synthetic project/archive and scoped source citation |
 | File operations | Create, read, edit, move, delete and restore passed |
 | OFF/ON | Fresh calls fail OFF and work ON |
 | Panel close | Connection remains available while panel is hidden |
@@ -306,9 +306,9 @@ Python can remain installed for other software. There is no Celious Windows serv
 
 Follow [PUBLISHING.md](PUBLISHING.md). Publish the sanitised source package, choose a licence and run the included Windows workflow. Never upload your live installation folder, working vault, API secrets or runtime recovery files. Read [SECURITY.md](SECURITY.md) for the application's actual security boundaries and [VALIDATION.md](VALIDATION.md) for what has and has not been tested.
 
-## 17. If you already installed our earlier Celia Files version
+## 17. Moving an earlier installation
 
-Our implementation was renamed **Celious Files** to distinguish it from the original **Celia** project that inspired it. The new desktop controller is **Celious Switch**, the launcher is **Start-Celious.cmd**, the tunnel profile is **celious**, and the repository is [ezequiel-gb/Celious](https://github.com/ezequiel-gb/Celious). Original Celia reference documents retain their original names.
+The current desktop controller is **Celious Switch**, the launcher is **Start-Celious.cmd**, the tunnel profile is **celious**, and the repository is [ezequiel-gb/Celious](https://github.com/ezequiel-gb/Celious). Confirm which source version is installed before choosing an upgrade procedure.
 
 Before migrating an existing installation, back up its configuration, vault, recovery storage and shortcuts. Turn OFF and Exit the old tray. Install the new source into a separate permanent folder using the same installation procedure and deliberate folder selections; recreate its Python environment rather than copying or simply moving the old one. Preserve your working files and recovery history before retiring the old installation. Generated profile and shortcut paths must point to the new location.
 

@@ -2,6 +2,8 @@
 
 Celious processes spreadsheets inside the existing local MCP file server. Paths use configured root aliases and relative paths. No additional service, database or network dependency is required. Spreadsheet data is untrusted input. Macros and formulas are never executed or recalculated.
 
+This extension is present in the local development source after the published v0.4.0 baseline. The server still reports version 0.4.0; use installed source and tool discovery to distinguish capability sets. There are 20 tools without memory or 33 with memory.
+
 ## Formats and dependencies
 
 | Format | Read | Create/edit | Conversion |
@@ -31,31 +33,31 @@ The existing `read_document` now extracts ODS and XLSX text with ordinary charac
 ### Examples
 
 ```json
-{"root":"Projects","path":"Leads/Leads.ods"}
+{"root":"Projects","path":"Example/Inventory.ods"}
 ```
 
 Pass that to `inspect_spreadsheet`, then read only the needed rows:
 
 ```json
-{"root":"Projects","path":"Leads/Leads.ods","worksheet":"Leads","start_row":1,"row_count":20,"start_column":1,"column_count":15}
+{"root":"Projects","path":"Example/Inventory.ods","worksheet":"Inventory","start_row":1,"row_count":20,"start_column":1,"column_count":15}
 ```
 
-Potential duplicates by email (column 4):
+Potential duplicate item keys (column 1):
 
 ```json
-{"root":"Projects","path":"Leads/Leads.ods","worksheet":"Leads","columns":[4],"mode":"duplicates"}
+{"root":"Projects","path":"Example/Inventory.ods","worksheet":"Inventory","columns":[1],"mode":"duplicates"}
 ```
 
 ODS to XLSX data transfer:
 
 ```json
-{"root":"Projects","path":"Leads/Leads.ods","destination":"Leads/Leads-working.xlsx","acknowledge_loss":true}
+{"root":"Projects","path":"Example/Inventory.ods","destination":"Example/Inventory-working.xlsx","acknowledge_loss":true}
 ```
 
 Create `workbook_json` as a JSON string containing:
 
 ```json
-[{"name":"Leads","rows":[["Name","Status"],["José","New"]]}]
+[{"name":"Inventory","rows":[["Name","Status"],["José","New"]]}]
 ```
 
 For edits, `operations_json` is a JSON string containing:
