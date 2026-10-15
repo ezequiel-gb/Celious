@@ -81,4 +81,6 @@ Health includes exact installed-versus-lock differences. It does not claim authe
 
 Installation uses the existing locked [setup procedure](INSTALLATION-A-TO-Z.md). Source upgrades copy all new modules and matching tests together; existing configuration, credentials, profiles, runtime state and memory are preserved. The source-only updater still requires a qualifying matching-lock environment and an OFF service. A missing-lock installation needs separately approved environment qualification/staging, never a copied lock to bypass the guard.
 
+Intentional `setup.py --replace-config` reconfiguration also explicitly replaces its generated tunnel profile; ordinary repeat setup refuses changes. Turn the connection OFF first and review root/tunnel options. This flag is not a source-upgrade command and must not be used to reset existing operational configuration casually.
+
 Run `service/test_workflows.py` and `service/test_workspace_protocol.py` with the installed interpreter. The second test executes actual MCP calls over two fresh processes with disposable roots, export ingestion, memory retrieval, typed workbook output, persistent workflow resume, a reviewed handoff, delta ingestion and conflict-safe rollback. These local checks do not assert hosted CI or live account deployment.

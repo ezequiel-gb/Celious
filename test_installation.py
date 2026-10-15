@@ -143,6 +143,16 @@ def main():
         for name in FILES:
             target=fresh/name;target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(BASE/name,target)
         run(sys.executable,fresh/'setup.py','--tunnel-id','tunnel_'+'0'*32,'--second-brain')
+        initial_config=(fresh/'service/config.json').read_bytes()
+        initial_profile=(fresh/'service/.runtime/profiles/celious.yaml').read_bytes()
+        refused=subprocess.run([sys.executable,str(fresh/'setup.py'),'--tunnel-id','tunnel_'+'0'*32,'--second-brain'],capture_output=True)
+        assert refused.returncode != 0
+        assert (fresh/'service/config.json').read_bytes()==initial_config
+        assert (fresh/'service/.runtime/profiles/celious.yaml').read_bytes()==initial_profile
+        run(sys.executable,fresh/'setup.py','--tunnel-id','tunnel_'+'0'*32,'--second-brain','--replace-config')
+        assert (fresh/'service/config.json').read_bytes()==initial_config
+        assert (fresh/'service/.runtime/profiles/celious.yaml').read_bytes()==initial_profile
+        print('Existing installation refuses unapproved repeat setup; explicit reconfiguration refreshes its profile without a collision.',flush=True)
         python=fresh/'service/.venv/Scripts/python.exe'
         assert 'include-system-site-packages = false' in (fresh/'service/.venv/pyvenv.cfg').read_text().lower()
         run(python,'-m','pip','check')

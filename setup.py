@@ -113,7 +113,8 @@ def main():
     command = f'"{python.as_posix()}" "{(BASE / "service" / "server.py").as_posix()}"'
     run(BASE / 'tools' / 'tunnel-client' / 'tunnel-client.exe', 'init',
         '--sample', 'sample_mcp_stdio_local', '--profile', 'celious', '--profile-dir', profiles,
-        '--tunnel-id', tunnel, '--mcp-command', command, '--health-listen-addr', '127.0.0.1:0')
+        '--tunnel-id', tunnel, '--mcp-command', command, '--health-listen-addr', '127.0.0.1:0',
+        *(['--force'] if args.replace_config else []))
     run(python, BASE / 'service' / 'connect.py', '--check')
     if args.shortcuts or args.startup:
         run(python, BASE / 'service' / 'install_tray.py', *(['--startup'] if args.startup else []))
