@@ -1,6 +1,19 @@
 # Release validation
 
-## Current development verification — 15 October 2026
+## Stabilisation verification — 15 October 2026
+
+The stabilisation branch follows documentation baseline `e4349c5`. Changes are limited to legacy launcher identity resolution, source-matched service tests during reviewed upgrades, safe isolated file-protocol acceptance, an actionable missing-lock refusal and related tests/documentation. The requirements and lock are unchanged. No operational deployment or new capability is implied.
+
+- The existing service suite passed all **64 tests** on Windows/Python 3.12.14 with the available private migration fixture. Public/disposable installations retain its expected skip. The separate memory protocol passed all 13 endpoints across two processes; the standalone file protocol passed with a copied server and 20 tools.
+- Focused tests cover explicit configuration precedence, generated-profile legacy identities, consistent quoting, malformed/missing/duplicate refusal, no config/profile rewrite, missing-lock refusal and preservation/refresh of service tests through interrupted/successful overlays. They are part of the eight package/compatibility cases, including existing package privacy/tamper checks.
+- All **eight package/compatibility cases passed**. The full disposable fresh/public-v0.2/pinned-v0.3 installation and upgrade matrix passed with locked environments, 20/33 discovery, original config/profile/record preservation, refreshed installed tests, memory migration and actual hidden process-tree shutdown. Repeated installer suites are not additional unique cases.
+- Installer acceptance checks that all six service tests match the current source after fresh installation and each supported overlay. It temporarily supplies an unusable synthetic installed configuration and runs the standalone file suite; success proves that the suite uses its own copied server/roots. The synthetic config is restored byte-for-byte.
+- Legacy launcher acceptance removes tunnel_id/plugin_url from a disposable configuration, runs the local launcher check and imports the tray, then verifies config/profile preservation. The existing generated profile format was also inspected read-only locally; no account-specific content enters fixtures or source.
+- Fresh installation uses the pinned lock. An existing environment can pass functionality and pip check while differing from that lock; this is not lock equality. Source overlays do not alter dependencies, launchers, trays or existing profiles. Missing locks require separate environment qualification, not a fabricated lock or automatic package upgrade.
+
+No new hosted CI, public release, production restart or operational memory mutation is claimed. The following sections retain source-specific earlier evidence and its original limits.
+
+## Pre-stabilisation development verification — 15 October 2026
 
 The inspected implementation is spreadsheet commit `6fdf2f2`, based on published v0.4.0 at `da20c3c`. The documentation consolidation changes no application source or runtime configuration. The spreadsheet extension is local development, not a newly published release; the server version identifier remains 0.4.0. Current discovery is 20 tools without memory and 33 with memory.
 

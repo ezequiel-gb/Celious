@@ -11,6 +11,8 @@ import zipfile
 
 BASE = Path(__file__).resolve().parent
 MODULES = ['engine.py', 'server.py', 'second_brain.py', 'project_memory.py', 'memory_tools.py', 'spreadsheets.py']
+TESTS = ['test_service.py', 'test_tray.py', 'test_second_brain.py', 'test_project_memory.py',
+         'test_memory_protocol.py', 'test_spreadsheets.py']
 GUIDES = ['SPREADSHEETS.md', 'LICENSE', 'README.md', 'PROJECT-MEMORY.md', 'SECOND-BRAIN.md', 'INSTALLATION-A-TO-Z.md',
           'PROJECT-EXPLAINED.md', 'VALIDATION.md', 'SECURITY.md', 'PUBLISHING.md', 'TROUBLESHOOTING.md']
 
@@ -49,8 +51,11 @@ def main():
     excluded = [live, BASE, *(Path(r['path']).absolute() for r in config['roots'].values())]
     if any(backup.is_relative_to(p) or p.is_relative_to(backup) for p in excluded):
         parser.error('Backup folder must be outside the installation and authorized roots')
-    changes = {'service/'+name: checked(BASE/'service'/name).read_bytes() for name in MODULES}
-    if (live/'service/requirements.lock.txt').read_text('utf-8-sig').splitlines() != (BASE/'service/requirements.lock.txt').read_text('utf-8-sig').splitlines():
+    changes = {'service/'+name: checked(BASE/'service'/name).read_bytes() for name in MODULES+TESTS}
+    lock = checked(live/'service/requirements.lock.txt')
+    if not lock.is_file():
+        parser.error('Dependency lock missing; review the existing environment separately before this source-only overlay')
+    if lock.read_text('utf-8-sig').splitlines() != (BASE/'service/requirements.lock.txt').read_text('utf-8-sig').splitlines():
         parser.error('Dependency lock differs; use a reviewed environment upgrade before this source-only overlay')
     changes.update({name: checked(BASE/name).read_bytes() for name in GUIDES})
     if args.enable_memory and 'second_brain' not in config:

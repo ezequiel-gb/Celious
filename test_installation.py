@@ -17,6 +17,37 @@ MEMORY_BASELINE='a1cb1890cc0ee93c46dd979d2c79a44ccf9a141f'
 def run(*args):
     subprocess.run([str(a) for a in args],check=True)
 
+def verify_service_tests(service, python):
+    from upgrade import TESTS
+    for name in TESTS:
+        assert (service/name).read_bytes()==(BASE/'service'/name).read_bytes(), 'Stale installed service test: '+name
+    config_path=service/'config.json'
+    original=config_path.read_bytes()
+    try:
+        # A standalone test must not read or mutate the installation's roots.
+        config_path.write_text(json.dumps(dict(roots={'Unavailable':dict(path=str(service/'nonexistent-root'),writable=False)})), 'utf-8')
+        run(python,service/'test_service.py')
+    finally:
+        config_path.write_bytes(original)
+    assert config_path.read_bytes()==original
+    print('Installed service tests match source; file protocol ignores installed roots/configuration.',flush=True)
+
+def verify_legacy_launcher(service, python):
+    config_path=service/'config.json'
+    original=config_path.read_bytes()
+    config=json.loads(original)
+    config.pop('tunnel_id',None);config.pop('plugin_url',None)
+    try:
+        config_path.write_text(json.dumps(config),'utf-8')
+        legacy=config_path.read_bytes()
+        profile=service/'.runtime/profiles/celious.yaml';profile_bytes=profile.read_bytes()
+        run(python,service/'connect.py','--check')
+        run(python,'-c',"import sys;sys.path.insert(0,sys.argv[1]);import tray;assert tray.PLUGIN=='https://chatgpt.com/plugins'",service)
+        assert config_path.read_bytes()==legacy and profile.read_bytes()==profile_bytes
+    finally:
+        config_path.write_bytes(original)
+    print('Legacy profile identity supports launcher check and tray import without config/profile mutation.',flush=True)
+
 async def seed_v03(service, manifest):
     sys.path.insert(0,str(service))
     from mcp import Client
@@ -115,6 +146,8 @@ def main():
         python=fresh/'service/.venv/Scripts/python.exe'
         assert 'include-system-site-packages = false' in (fresh/'service/.venv/pyvenv.cfg').read_text().lower()
         run(python,'-m','pip','check')
+        verify_legacy_launcher(fresh/'service',python)
+        verify_service_tests(fresh/'service',python)
         run(python,BASE/'test_installation.py','--probe',fresh/'service','--initialize','--cli')
         config_path=fresh/'service/config.json'
         config=json.loads(config_path.read_text());config.pop('second_brain');config_path.write_text(json.dumps(config))
@@ -165,6 +198,7 @@ def main():
             assert json.loads(bundle.read('service/config.json'))==before
             assert bundle.read('service/engine.py') != (BASE/'service/engine.py').read_bytes()
         run(old_python,'-m','pip','check')
+        verify_service_tests(legacy/'service',old_python)
         run(old_python,BASE/'test_installation.py','--probe',legacy/'service','--initialize','--legacy')
         print('Real fresh install, opt-in/off 33/20 tools, public v0.2 source upgrade, preserved config/profile/files, verified overlay checkpoint, legacy byte migration and workflow preservation passed.',flush=True)
         v03=workspace/'v0.3 existing custom memory';v03.mkdir()
@@ -184,6 +218,7 @@ def main():
             '--enable-memory','--apply','--connection-off')
         assert config_path.read_bytes()==original_config and profile.read_bytes()==profile_bytes
         run(v03_python,'-m','pip','check')
+        verify_service_tests(v03/'service',v03_python)
         run(v03_python,BASE/'test_installation.py','--probe',v03/'service','--initialize','--cli','--expected-records',manifest)
         assert not (Path(config['roots']['Projects']['path'])/'Archives').exists()
         print('Pinned v0.3 19-tool archive -> source overlay -> OFF CLI migration -> 33-tool retrieval passed; custom prefix, config/profile, CRLF workflow and exact source/knowledge bytes preserved.',flush=True)

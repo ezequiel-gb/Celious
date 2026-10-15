@@ -87,6 +87,8 @@ service\.venv\Scripts\python.exe service/tray.py --self-test
 
 These cover the filesystem/tray foundation. For the complete current test organisation, see VALIDATION.md and PUBLISHING.md: legacy/project memory, all 13 memory endpoints, package privacy/integrity and real disposable fresh-install/pinned-v0.2/v0.3 upgrades are also included. The published v0.4.0 baseline recorded 46 passing public unit tests and one intentional private-backup skip. The spreadsheet extension has separate validation; see VALIDATION.md for source-specific evidence and limitations. Installer scenarios repeat relevant suites. No real API key is needed. CI uses dummy IDs, not account connections or secrets.
 
+The current standalone file test copies its server into disposable roots and checks the 20-tool file/spreadsheet mode; it does not use installed project roots or operational memory. The separate memory protocol test checks 33 tools in its own disposable configuration. Reviewed source upgrades refresh the corresponding service tests with the core modules. Existing environments must be qualified separately from the fresh-install dependency lock; see [upgrade and dependency policy](PROJECT-MEMORY.md#upgrade-from-public-v020-or-private-v030).
+
 The installer uses requirements.lock.txt, which records the tested direct and transitive Python dependency versions. requirements.txt describes the six direct dependencies for future deliberate upgrades. Python patch versions, package hashes and the Windows runner image are not frozen; this is a repeatable installation recipe rather than a byte-identical build. See [VALIDATION.md](VALIDATION.md) for the release's actual verification results.
 
 ## How the components fit

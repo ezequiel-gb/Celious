@@ -39,6 +39,12 @@ Review logs locally before sharing: paths and account metadata may appear even w
 
 A current-source connection should expose six spreadsheet tool names plus the 14 filesystem tools, and 13 more when memory is enabled. An older v0.4.0 server exposes 14/27. If schemas stay stale, check installed source, restart through the normal operator procedure and refresh/reconnect the client. A schema listing alone does not prove successful invocation.
 
+## Launcher, dependency and installed-test consistency
+
+- For a legacy config without tunnel_id, the current launcher reads the existing generated profile's control_plane identity without changing configuration. Missing, malformed or duplicate identities require local review; an invalid explicit config identity never falls back silently. Missing plugin_url opens the generic plugin page.
+- A missing/different dependency lock blocks the source-only overlay with an actionable error. Review the environment separately; never fabricate a matching lock to bypass this guard. pip check success does not establish equality with pinned versions. Fresh setup uses the lock; reviewed core overlays preserve installed packages.
+- Use service test scripts from the same reviewed source overlay as the core modules. The updated standalone file protocol uses a copied server and synthetic roots, independently of installed memory settings. An old exact-14 assertion is not evidence that current 20/33-tool source is broken. Keep launcher and tray deployment separate from a core-only overlay.
+
 ## Complete rollback
 
 Keep the connection OFF, preserve post-backup work separately, verify backup hashes and extract into a disposable folder first. Restore code/config and canonical memory from the SAME pre-upgrade snapshot, not a mixture of v0.3 code and v4 layout. An overlay checkpoint alone is not a full data/environment backup. Preserve v4-only/newer files separately instead of deleting them. Follow your manifest paths; do not overwrite unrelated folders or historical backups. Recreate the environment if paths changed, verify dependencies/inspection/roots/profile, then restart and privately enter the existing key if Exit cleared it.

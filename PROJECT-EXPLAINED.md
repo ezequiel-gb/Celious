@@ -106,7 +106,11 @@ The 14 file endpoints are list_roots, list_directory, read_document, read_file_b
 
 ### Configuration and data format
 
-setup.py generates private service/config.json. config.example.json is a portable example, not a file to copy over a working installation. It contains tunnel_id (identifier, not secret), plugin_url, read_only, direct_operations and roots with path/writable. Enabling memory adds:
+setup.py generates private service/config.json. config.example.json is a portable example, not a file to copy over a working installation. It contains tunnel_id (identifier, not secret), plugin_url, read_only, direct_operations and roots with path/writable.
+
+The launcher prefers an explicit valid tunnel_id in config. For older configurations that lack this field, it reads the single tunnel_id under control_plane in the existing generated service/.runtime/profiles/celious.yaml. This limited compatibility reader accepts unquoted or consistently quoted identifiers, rejects missing/invalid/ambiguous identities and never rewrites either file. An invalid explicit config value is not replaced by a profile fallback. A missing plugin_url uses the generic ChatGPT plugin page. Source-only core upgrades preserve the existing launcher, tray and profile; replacing those components is a separately reviewed operation.
+
+Enabling memory adds:
 
 ```json
 "second_brain": {"root": "Projects", "path": "Archives", "flat_projects": true}

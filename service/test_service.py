@@ -1,5 +1,6 @@
 import asyncio
 import json
+import shutil
 from pathlib import Path
 import sys
 import tempfile
@@ -173,14 +174,31 @@ class PolicyTests(unittest.TestCase):
 
 
 async def protocol_test():
+    # Installed verification must never inherit operational roots or memory.
+    with tempfile.TemporaryDirectory(prefix='celious-file-protocol-') as temporary:
+        base = Path(temporary)
+        service = base / 'service'
+        service.mkdir()
+        for name in ['engine.py', 'server.py', 'spreadsheets.py', 'memory_tools.py', 'project_memory.py', 'second_brain.py']:
+            shutil.copy2(BASE / name, service / name)
+        for name in ['Vault', 'Projects']:
+            (base / name / 'Inbox').mkdir(parents=True)
+        (base / 'Vault/INDEX.md').write_text('# Disposable protocol fixture', 'utf-8')
+        config = dict(direct_operations=True, roots={name: dict(path=str(base/name), writable=True) for name in ['Vault', 'Projects']})
+        (service / 'config.json').write_text(json.dumps(config), 'utf-8')
+        await file_protocol(service, config)
+
+
+async def file_protocol(service, config):
     from mcp import Client
     from mcp.client.stdio import StdioServerParameters
-    transport = StdioServerParameters(command=sys.executable, args=[str(BASE / 'server.py')])
+    transport = StdioServerParameters(command=sys.executable, args=[str(service / 'server.py')])
     async with Client(transport) as client:
         tools = await client.list_tools()
         names = {x.name for x in tools.tools}
-        assert names >= {'list_roots', 'list_directory', 'read_document', 'search_files', 'propose_write', 'propose_folder', 'propose_move',
-                         'read_file_bytes', 'write_file', 'edit_file', 'create_directory', 'move_file', 'delete_file', 'restore_deleted'}, names
+        assert names == {'list_roots', 'list_directory', 'read_document', 'search_files', 'propose_write', 'propose_folder', 'propose_move',
+                         'read_file_bytes', 'write_file', 'edit_file', 'create_directory', 'move_file', 'delete_file', 'restore_deleted',
+                         'inspect_spreadsheet', 'read_spreadsheet', 'search_spreadsheet', 'convert_spreadsheet', 'edit_spreadsheet', 'write_spreadsheet'}, names
         result = await client.call_tool('list_roots', {})
         assert not result.is_error, result
         result = await client.call_tool('read_document', {'root': 'Vault', 'path': 'INDEX.md'})
@@ -199,7 +217,7 @@ async def protocol_test():
         ]:
             result = await client.call_tool(tool, args)
             assert not result.is_error, (tool, result)
-        assert not Files().path('Vault', folder).exists()
+        assert not Files(config, service / '.runtime').path('Vault', folder).exists()
         for tool, args in [('delete_file', {'root':'Vault', 'path':'..', 'recursive':True}),
                            ('write_file', {'root':'Projects', 'path':'../outside.txt', 'content':'blocked'})]:
             result = await client.call_tool(tool, args)
