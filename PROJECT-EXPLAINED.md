@@ -1,6 +1,6 @@
 # What Celious Files is and how it works
 
-Celious connects ChatGPT to selected Windows folders, structured spreadsheet operations and optional evidence-backed project memory. This guide describes the proposed v0.5.0 release candidate, based on published v0.4.0 plus the existing spreadsheet extension and compatibility corrections. The candidate server reports 0.5.0; memory retains layout version 4.
+Celious connects ChatGPT to selected Windows folders, structured spreadsheet operations and optional evidence-backed project memory. The 0.6.0 development source adds incremental supplied-source ingestion, durable workflows, context selection, recovery checkpoints and reviewed client-tool handoffs. The published baseline remains v0.4.0; memory retains layout version 4. No publication or production deployment is implied.
 
 Celious Files lets you use ChatGPT to work with files in folders you explicitly select on your Windows computer. You can ask for a document summary, a file search, an edited note, a new folder or a recoverable deletion. The assistant chooses tools, while local software performs permitted operations on disk.
 
@@ -67,7 +67,7 @@ The tray controls availability. ON starts the local tunnel and server. Hiding th
 
 ## What the current source can do
 
-The 14 filesystem tools cover listing, document/binary reads, search, direct writes/edits, folders, moves, recoverable deletion/restoration and proposals. v0.4 optionally adds 13 memory endpoints for separate project collections, cited retrieval, read-only candidates, Inbox review, exact authorized commits, supersession/history and recovery. Current development setup exposes 20 tools; setup --second-brain enables 33 without silently initializing. Follow [PROJECT-MEMORY.md](PROJECT-MEMORY.md) for reviewed setup/upgrade/migration.
+The 14 filesystem tools cover listing, document/binary reads, search, direct writes/edits, folders, moves, recoverable deletion/restoration and proposals. v0.4 optionally adds 13 memory endpoints for separate project collections, cited retrieval, read-only candidates, Inbox review, exact authorized commits, supersession/history and recovery. Current development setup exposes 33 tools; setup --second-brain enables 33 without silently initializing. Follow [PROJECT-MEMORY.md](PROJECT-MEMORY.md) for reviewed setup/upgrade/migration.
 
 The server extracts text from PDF, DOCX, ODT, ODS and XLSX files and reads ordinary text/code files. Six dedicated tools add typed ODS/XLSX/CSV/TSV inspection, bounded reads/searches, controlled writes/edits and explicit data-only conversion. See [SPREADSHEETS.md](SPREADSHEETS.md) for parameter details and feature-loss acknowledgements. It does not provide OCR or rich-document layout editing. Binary writes must contain valid bytes for the intended format. File write/read limits and format behaviour are in README.md.
 
@@ -128,9 +128,13 @@ ProjectBrain reuses file policy and the global cooperating-process lock. Plans b
 
 Use a dedicated source branch and disposable roots; never develop mutation tests against the live installation. Preserve existing tool names/arguments where feasible and explicitly document intentional compatibility changes such as unassigned legacy archive calls entering Inbox. Add meaningful policy/migration/workflow tests, update existing guides and package allowlist, and run the permanent PUBLISHING.md checklist. New dependencies, permissions, observers or credential behavior need deliberate design/review. Do not claim a feature tested merely because its code exists or an old CI run passed.
 
+## Integrated execution
+
+The service registers `workspace_tools` alongside file/spreadsheet/memory tools. `ingestion` parses supplied source deltas into the existing reviewed memory coordinator. `workflows` executes bounded adapters with durable state/checkpoints in private `.runtime/operations`; `operations_state` serializes cooperating processes and flushes intents before effects. Client-side research/code/test capabilities use reviewed artifact handoffs; there is no server shell or autonomous account access. [User procedures and recovery](WORKFLOWS.md).
+
 ## Capability status and development priorities
 
-Status is specific to the tested source and environment. Existing code alone does not establish operational availability. The published baseline has 14/27 tools; this development source has 20/33 with memory disabled/enabled. [VALIDATION.md](VALIDATION.md) separates historical release evidence from current checks.
+Status is specific to the tested source and environment. Existing code alone does not establish operational availability. The published baseline has 14/27 tools; this development source has 33/46 with memory disabled/enabled. [VALIDATION.md](VALIDATION.md) separates historical release evidence from current checks.
 
 | Capability | Status and evidence | Practical limit |
 | --- | --- | --- |
@@ -141,9 +145,10 @@ Status is specific to the tested source and environment. Existing code alone doe
 | Supervised archive workflow | Implemented; preview/digest, Inbox, conflict and recovery tests | Approval binds the exact plan; raw writes bypass coordination |
 | Tray and tunnel lifecycle | Implemented; lifecycle tests and historical Windows acceptance | Live account permissions and connector refresh require environment-specific checks |
 | Installation and source upgrades | Implemented; fresh/v0.2/v0.3 matrix passed for stabilised spreadsheet source | Exact candidate checks are recorded separately; hosted CI and production cutover need their own acceptance |
-| General task orchestration | Not implemented as a Celious subsystem | Client-directed tool sequences have no durable task queue |
+| Durable task orchestration | Implemented with bounded dependency steps, persistent progress, output verification and reverse recovery | Explicit run/resume; client-tool handoffs pause for evidence; not a background scheduler |
 | Scheduler, autonomous workers and agent bridge | Not implemented | No execution service or worker permission model is supplied |
-| Semantic retrieval and automatic history import | Not implemented | No embeddings, inference dependency or hidden-chat importer |
+| Supplied conversation/document ingestion | Implemented with project-bound incremental streams and reviewed evidence plans | No inaccessible-history retrieval; edited source requires explicit revision review |
+| Semantic retrieval | Weighted lexical retrieval remains implemented | No embeddings or undisclosed inference dependency |
 
 The candidate consolidates existing file, spreadsheet and project-memory behavior. No approved feature backlog is implied by this table. Remaining release steps are exact-candidate validation, hosted CI after an authorized push, explicit publication review and separately authorized production acceptance. Further implementation requires its own approved scope and acceptance criteria.
 

@@ -9,13 +9,14 @@ import zipfile
 
 BASE = Path(__file__).resolve().parent
 FILES = ['LICENSE', 'README.md', 'TROUBLESHOOTING.md', 'SECURITY.md', 'PUBLISHING.md', 'VALIDATION.md',
-         'SPREADSHEETS.md', 'INSTALLATION-A-TO-Z.md', 'PROJECT-EXPLAINED.md', 'SECOND-BRAIN.md', 'PROJECT-MEMORY.md',
+         'SPREADSHEETS.md', 'WORKFLOWS.md', 'INSTALLATION-A-TO-Z.md', 'PROJECT-EXPLAINED.md', 'SECOND-BRAIN.md', 'PROJECT-MEMORY.md',
          '.gitignore', '.github/workflows/windows.yml', 'setup.py', 'upgrade.py', 'package.py', 'test_installation.py', 'test_package.py',
          'Install.cmd', 'Start-Celious.cmd']
 FILES += ['service/' + name for name in ['engine.py', 'server.py', 'spreadsheets.py', 'test_spreadsheets.py', 'connect.py', 'tray_core.py',
           'tray.py', 'install_tray.py', 'review.py', 'test_service.py', 'test_tray.py',
           'requirements.txt', 'requirements.lock.txt', 'config.example.json',
-          'second_brain.py', 'project_memory.py', 'memory_tools.py', 'test_second_brain.py', 'test_project_memory.py', 'test_memory_protocol.py']]
+          'second_brain.py', 'project_memory.py', 'memory_tools.py', 'test_second_brain.py', 'test_project_memory.py', 'test_memory_protocol.py',
+          'operations_state.py', 'ingestion.py', 'workflows.py', 'workspace_tools.py', 'test_workflows.py', 'test_workspace_protocol.py']]
 FILES += ['assets/celious-' + state + '.ico' for state in ['on', 'off', 'starting', 'error']]
 
 

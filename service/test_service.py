@@ -179,7 +179,8 @@ async def protocol_test():
         base = Path(temporary)
         service = base / 'service'
         service.mkdir()
-        for name in ['engine.py', 'server.py', 'spreadsheets.py', 'memory_tools.py', 'project_memory.py', 'second_brain.py']:
+        for name in ['engine.py', 'server.py', 'spreadsheets.py', 'memory_tools.py', 'project_memory.py', 'second_brain.py',
+                     'operations_state.py', 'ingestion.py', 'workflows.py', 'workspace_tools.py']:
             shutil.copy2(BASE / name, service / name)
         for name in ['Vault', 'Projects']:
             (base / name / 'Inbox').mkdir(parents=True)
@@ -198,7 +199,9 @@ async def file_protocol(service, config):
         names = {x.name for x in tools.tools}
         assert names == {'list_roots', 'list_directory', 'read_document', 'search_files', 'propose_write', 'propose_folder', 'propose_move',
                          'read_file_bytes', 'write_file', 'edit_file', 'create_directory', 'move_file', 'delete_file', 'restore_deleted',
-                         'inspect_spreadsheet', 'read_spreadsheet', 'search_spreadsheet', 'convert_spreadsheet', 'edit_spreadsheet', 'write_spreadsheet'}, names
+                         'inspect_spreadsheet', 'read_spreadsheet', 'search_spreadsheet', 'convert_spreadsheet', 'edit_spreadsheet', 'write_spreadsheet',
+                         'workspace_context', 'integration_status', 'workflow_create', 'workflow_run', 'workflow_status', 'workflow_list',
+                         'workflow_receipt', 'workflow_reconcile', 'workflow_rollback', 'ingest_preview', 'ingest_commit', 'inspect_archive', 'extract_archive_preview'}, names
         result = await client.call_tool('list_roots', {})
         assert not result.is_error, result
         result = await client.call_tool('read_document', {'root': 'Vault', 'path': 'INDEX.md'})

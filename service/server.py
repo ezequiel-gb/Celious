@@ -4,6 +4,7 @@ from mcp.server.mcpserver.exceptions import ToolError
 from engine import Files
 from spreadsheets import SpreadsheetError, register as register_spreadsheets
 from memory_tools import register as register_memory
+from workspace_tools import register as register_workspace
 
 def invoke(fn, *args, **kwargs):
     try:
@@ -12,13 +13,17 @@ def invoke(fn, *args, **kwargs):
         raise ToolError(str(error)) from None
     except SpreadsheetError as error:
         raise ToolError(str(error)) from None
-    except (ValueError, UnicodeError):
+    except (ValueError, UnicodeError, TypeError):
         raise ToolError('Invalid operation, unsupported document, or file conflict. Check supported formats and permissions.') from None
     except OSError:
         raise ToolError('File or folder unavailable. Check the relative path and local permissions.') from None
 
 files = Files()
-mcp = MCPServer('Celious Files', version='0.5.0', instructions=(
+mcp = MCPServer('Celious Files', version='0.6.0', instructions=(
+    'Begin project work with workspace_context using an explicit project or configured path binding. '
+    'Use workflow_create/run/status for durable multi-step tasks; handoffs require separately authorized client tools. '
+    'Inspect integration_status before assuming an external integration exists. '
+    'Use ingest_preview/ingest_commit for incremental supplied exports and handovers; no history is automatically fetched. '
     'Archive only under the single configured archive_root returned by memory_projects; '
     'project folders belong inside it. Never invent another archive location or create '
     'Conversation Archives folders under Sources/Knowledge. Archive supplied conversations '
@@ -115,6 +120,7 @@ def propose_move(root: str, path: str, destination: str) -> dict:
 
 register_spreadsheets(mcp, files, invoke, read, mutation)
 register_memory(mcp, files, invoke, read, mutation, stage)
+register_workspace(mcp, files, invoke, read, mutation, stage)
 
 if __name__ == '__main__':
     mcp.run(transport='stdio')

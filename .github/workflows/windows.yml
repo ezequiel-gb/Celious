@@ -38,3 +38,7 @@ jobs:
         run: .\service\.venv\Scripts\python.exe service/test_project_memory.py
       - name: Hidden Windows process tree shuts down
         run: .\service\.venv\Scripts\python.exe service/tray.py --self-test
+      - name: Integrated workflows, ingestion and fresh-session continuity
+        run: |
+          .\service\.venv\Scripts\python.exe service/test_workflows.py
+          .\service\.venv\Scripts\python.exe service/test_workspace_protocol.py

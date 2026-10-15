@@ -239,7 +239,8 @@ class ProtocolTests(unittest.TestCase):
         self.addCleanup(temporary.cleanup)
         base=Path(temporary.name)
         service=base/'service'; service.mkdir()
-        for name in ['server.py','engine.py','spreadsheets.py','memory_tools.py','project_memory.py','second_brain.py']:
+        for name in ['server.py','engine.py','spreadsheets.py','memory_tools.py','project_memory.py','second_brain.py',
+                     'operations_state.py','ingestion.py','workflows.py','workspace_tools.py']:
             shutil.copy2(Path(__file__).parent/name,service/name)
         (base/'vault/Inbox').mkdir(parents=True)
         (service/'config.json').write_text(json.dumps({'direct_operations':True,'roots':{'Vault':{'path':str(base/'vault'),'writable':True}}}),'utf-8')

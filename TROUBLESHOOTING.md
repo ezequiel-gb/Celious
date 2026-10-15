@@ -26,8 +26,8 @@ Review logs locally before sharing: paths and account metadata may appear even w
 
 | Symptom | Check and action |
 | --- | --- |
-| Only 20 tools | Memory is opt-in in the spreadsheet development source. A published v0.4.0 installation without spreadsheets exposes 14. Inspect private config for second_brain; use --second-brain on fresh setup or reviewed upgrade --enable-memory. Restart/refresh discovery. Do not replace existing roots/config with an example. |
-| 33 tools but project/layout unavailable | Tools enabled is not initialized. Review plan-migrate/commit while OFF, or use the ON/refresh-first MCP sequence in PROJECT-MEMORY.md. |
+| Only 33 tools | Memory is opt-in in the spreadsheet development source. A published v0.4.0 installation without spreadsheets exposes 14. Inspect private config for second_brain; use --second-brain on fresh setup or reviewed upgrade --enable-memory. Restart/refresh discovery. Do not replace existing roots/config with an example. |
+| 46 tools but project/layout unavailable | Tools enabled is not initialized. Review plan-migrate/commit while OFF, or use the ON/refresh-first MCP sequence in PROJECT-MEMORY.md. |
 | Migration says already initialized | LAYOUT.md is version 4. Do not rerun; list projects, inspect and retrieve instead. |
 | Upgrade requires OFF or rejects busy state | Stop actual clients for that installation/tunnel; do not edit tray-status.json to bypass the guard. --connection-off is your acknowledgement, not a stop command. |
 | Upgrade rejects dependency lock or customized code | Do not bypass it. Review dependencies/environment and customized module diffs separately; the helper is a source overlay for compatible locks. |
@@ -43,7 +43,7 @@ A current-source connection should expose six spreadsheet tool names plus the 14
 
 - For a legacy config without tunnel_id, the current launcher reads the existing generated profile's control_plane identity without changing configuration. Missing, malformed or duplicate identities require local review; an invalid explicit config identity never falls back silently. Missing plugin_url opens the generic plugin page.
 - A missing/different dependency lock blocks the source-only overlay with an actionable error. Review the environment separately; never fabricate a matching lock to bypass this guard. pip check success does not establish equality with pinned versions. Fresh setup uses the lock; reviewed core overlays preserve installed packages.
-- Use service test scripts from the same reviewed source overlay as the core modules. The updated standalone file protocol uses a copied server and synthetic roots, independently of installed memory settings. An old exact-14 assertion is not evidence that current 20/33-tool source is broken. Keep launcher and tray deployment separate from a core-only overlay.
+- Use service test scripts from the same reviewed source overlay as the core modules. The updated standalone file protocol uses a copied server and synthetic roots, independently of installed memory settings. An old exact-14 assertion is not evidence that current 20/46-tool source is broken. Keep launcher and tray deployment separate from a core-only overlay.
 
 ## Complete rollback
 
@@ -52,3 +52,7 @@ Keep the connection OFF, preserve post-backup work separately, verify backup has
 Automated tests exercise rollback/interruption and synthetic migration; the maintainer also tested isolated restoration of a captured baseline. A real production rollback, another account's reauthentication and restoration of Windows ACLs/alternate streams/cloud settings are not claimed as performed. Consult VALIDATION.md before treating a recovery procedure as an executed acceptance check.
 
 Reference: [OpenAI Secure MCP Tunnel troubleshooting](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels).
+
+## Integrated workflows
+
+Use `integration_status`, `workspace_context` and `workflow_status` to inspect availability, project selection, paused tasks and errors. A missing connector is a client-side limitation; use a supplied artifact rather than claiming account access. Changed inputs/outputs require review and a new plan. For interrupted spreadsheet output, inspect it before exact `workflow_reconcile`; never replay blindly. An edited import stream requires an explicit revision ID. See [WORKFLOWS.md](WORKFLOWS.md).

@@ -2,7 +2,7 @@
 
 This guide takes a new operator from an unconfigured Windows computer to a tested ChatGPT connection. Read [PROJECT-EXPLAINED.md](PROJECT-EXPLAINED.md) first for the purpose, architecture and limits.
 
-Published baseline: **v0.4.0**; this is the proposed **v0.5.0 release candidate**. This source includes six spreadsheet tools and exposes 20 tools without memory. For a fresh 33-tool Second Brain use setup.py --second-brain, then review/commit initialization as documented in [PROJECT-MEMORY.md](PROJECT-MEMORY.md). That guide also gives the complete public-v0.2/private-v0.3 upgrade, including engine.py, and separate OFF-CLI versus ON-MCP migration sequences. Do not use --replace-config as a source-upgrade shortcut.
+Published baseline: **v0.4.0**; this is the **0.6.0 integrated development source**. It exposes 33 tools without memory and 46 with memory, including thirteen integrated context/ingestion/workflow/archive tools. For fresh memory setup use setup.py --second-brain, then review/commit initialization as documented in [PROJECT-MEMORY.md](PROJECT-MEMORY.md). That guide gives the public-v0.2/private-v0.3 upgrade and separate OFF-CLI versus ON-MCP migration sequences. [WORKFLOWS.md](WORKFLOWS.md) covers project continuity and recovery. Do not use --replace-config as a source-upgrade shortcut.
 
 All commands below are for **Command Prompt**, unless stated otherwise. Do not paste your API secret into commands, ChatGPT, screenshots, GitHub or these documents. The setup command needs a tunnel ID; the secret belongs only in Celious's masked input window.
 
@@ -164,7 +164,7 @@ If the required permission is absent, resolve it before connecting. Celious cann
 
 ## 7. Install the local software
 
-Choose ONE option before running setup. Options A/B create an installation without memory (20 tools, including spreadsheets). For the complete Second Brain installation, choose Option C instead. Do not run setup again over a configured installation to change its memory mode; use the reviewed existing-installation procedure in PROJECT-MEMORY.md.
+Choose ONE option before running setup. Options A/B create an installation without memory (33 tools, including spreadsheets). For the complete Second Brain installation, choose Option C instead. Do not run setup again over a configured installation to change its memory mode; use the reviewed existing-installation procedure in PROJECT-MEMORY.md.
 
 ### Option A: simplest installation with empty default folders
 
@@ -194,7 +194,7 @@ Open Command Prompt in the extracted folder as described in Option B. With defau
 py -3.12 setup.py --second-brain --shortcuts
 ```
 
-Enter only your tunnel ID when prompted. To use chosen folders, add the same --projects/--vault options as Option B; --startup remains optional. Expect dependency verification and Local installation ready. Memory tools are enabled, but no notes/layout are silently initialized. Keep the switch OFF and complete the reviewed local CLI initialization in PROJECT-MEMORY.md, or turn ON/connect/refresh first and use its MCP alternative. Continue sections 8–10 to enter the secret privately, install the ChatGPT connection and test file access; then complete the memory first-use test. A fresh --second-brain setup should expose 33 tools; a setup without memory exposes 20.
+Enter only your tunnel ID when prompted. To use chosen folders, add the same --projects/--vault options as Option B; --startup remains optional. Expect dependency verification and Local installation ready. Memory tools are enabled, but no notes/layout are silently initialized. Keep the switch OFF and complete the reviewed local CLI initialization in PROJECT-MEMORY.md, or turn ON/connect/refresh first and use its MCP alternative. Continue sections 8–10 to enter the secret privately, install the ChatGPT connection and test file access; then complete the memory first-use test. A fresh --second-brain setup should expose 46 tools; a setup without memory exposes 20.
 
 ### If installation fails
 
@@ -250,7 +250,7 @@ Do not test deletion with existing valuable files. Recovery data is not the Wind
 
 ## 11. Verify and record your installation
 
-For Second Brain, now follow [reviewed initialization and the complete first-use memory test](PROJECT-MEMORY.md#first-use-memory-test). Confirm 33 tools when enabled, actual project UUIDs, version 4, clean inspection, a reviewed synthetic project/archive and cited retrieval. The filesystem test above remains necessary; a successful memory search alone does not validate editing, recovery or OFF/ON behavior. These account/UI checks are manual; the installer cannot grant ChatGPT access or confirm which tools your model chose.
+For Second Brain, now follow [reviewed initialization and the complete first-use memory test](PROJECT-MEMORY.md#first-use-memory-test). Confirm 46 tools when enabled, actual project UUIDs, version 4, clean inspection, a reviewed synthetic project/archive and cited retrieval. The filesystem test above remains necessary; a successful memory search alone does not validate editing, recovery or OFF/ON behavior. These account/UI checks are manual; the installer cannot grant ChatGPT access or confirm which tools your model chose.
 
 Fill this table after testing. This is the evidence needed to call your installation ready.
 
@@ -261,7 +261,7 @@ Fill this table after testing. This is the evidence needed to call your installa
 | Roots | Actual Projects/Vault folders reviewed |
 | Connection | Green in the tray |
 | ChatGPT discovery | Celious Files selectable and tools available |
-| Optional Second Brain | 33 tools, reviewed initialized layout, clean inspection, synthetic project/archive and scoped source citation |
+| Optional Second Brain | 46 tools, reviewed initialized layout, clean inspection, synthetic project/archive and scoped source citation |
 | File operations | Create, read, edit, move, delete and restore passed |
 | OFF/ON | Fresh calls fail OFF and work ON |
 | Panel close | Connection remains available while panel is hidden |
@@ -313,3 +313,7 @@ The current desktop controller is **Celious Switch**, the launcher is **Start-Ce
 Before migrating an existing installation, back up its configuration, vault, recovery storage and shortcuts. Turn OFF and Exit the old tray. Install the new source into a separate permanent folder using the same installation procedure and deliberate folder selections; recreate its Python environment rather than copying or simply moving the old one. Preserve your working files and recovery history before retiring the old installation. Generated profile and shortcut paths must point to the new location.
 
 Renaming a project or a display label does not invalidate its existing tunnel ID or secret key. You can keep the same connection and privately re-enter its existing key after restart. Rename the existing ChatGPT app/Platform display labels if desired; do not change credentials, permissions or associations merely to change the name. If you keep both versions during migration, run only one client for the same tunnel at a time.
+
+## Integrated source and task continuity
+
+This 0.6.0 development source includes thirteen context, incremental ingestion, workflow and archive tools alongside the existing file/spreadsheet/memory interfaces. [WORKFLOWS.md](WORKFLOWS.md) provides installation compatibility, explicit session-start prompts, reviewed import, client-tool handoffs, bounded execution and recovery. Historical validation below does not establish live account acceptance for this source.

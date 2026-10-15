@@ -1,8 +1,13 @@
 # Release validation
 
-## Proposed v0.5.0 release candidate
+## Integrated 0.6.0 development source
 
-The candidate follows stabilisation commit `e3e40a7`. Its only application-source change from that baseline is the server version identifier, now 0.5.0. File/spreadsheet operations, memory layout version 4, dependencies and upgrade behavior are unchanged. Documentation distinguishes candidate, published and installed states and removes stale installer-status statements.
+The new behavioral suite is `service/test_workflows.py`; actual cross-process MCP acceptance is `service/test_workspace_protocol.py`. They cover incremental exports, source/project isolation, reviewed claims, stale plans, competing writes, resumable multi-file work, interruption reconciliation, typed workbooks, client artifact handoffs and reverse recovery. Run both with the locked interpreter after setup, alongside every existing service/package test and `test_installation.py`. Discovery is 33 tools without memory and 46 with memory. No hosted CI or production acceptance is inferred from local checks. Later sections retain historical baseline evidence.
+
+
+## Historical v0.5.0 candidate baseline
+
+The earlier 0.5.0 candidate `0502d30` follows stabilisation commit `e3e40a7`. Its only application-source change from that baseline was the server version identifier. The 0.6.0 implementation extends that preserved baseline; historical checks below are not evidence for new behavior.
 
 The final candidate must be committed before acceptance. Record its commit/tree and package checksum in a separate validation record, then keep source fixed while running: all service tests, eight package/compatibility cases, standalone file and memory protocols, real fresh/public-v0.2/pinned-v0.3 installers, locked-dependency checks, installed-test matching, documentation links and package/history privacy. The expected public-fixture count is 71 passed and one unavailable-private-fixture skip across 72 unique unit cases; repeated installer executions are not extra cases. These are expected counts until execution is recorded.
 

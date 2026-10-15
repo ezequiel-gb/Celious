@@ -1,6 +1,6 @@
 # Celious Second Brain
 
-**Memory layout: version 4; proposed source release: v0.5.0.** Use [Project memory: fresh setup, upgrades and reviewed initialization](PROJECT-MEMORY.md) for the complete procedure and current 33-tool schema. Historical v0.3 source remains in Git; current instructions retain the v0.4 project-memory format without a new memory migration.
+**Memory layout: version 4; proposed source release: v0.5.0.** Use [Project memory: fresh setup, upgrades and reviewed initialization](PROJECT-MEMORY.md) for the complete procedure and current 46-tool schema. Historical v0.3 source remains in Git; current instructions retain the v0.4 project-memory format without a new memory migration.
 
 Celious can archive supplied conversation text, keep evidence separate from reusable claims, retrieve cited context, and supersede decisions without losing their history. This extension makes no network or model calls and starts no worker. ChatGPT provides the reasoning and proposed extraction; local code checks evidence, paths and conflicts.
 
@@ -26,7 +26,7 @@ Follow the complete verified-backup/upgrade procedure in PROJECT-MEMORY.md. The 
 "second_brain": {"root": "Projects", "path": "Archives", "flat_projects": true}
 ```
 
-Keep all existing roots, permissions, tunnel identity and credential behavior. Review/commit initialization or migration with the local CLI while OFF, or restart/refresh FIRST for the MCP alternative. With the object absent, this development source exposes 20 file/spreadsheet tools; enabled installations advertise 33 tools. The published v0.4.0 baseline used 14/27. Setup --second-brain enables tools without silently initializing. Migration creates WORKFLOW.md only if missing.
+Keep all existing roots, permissions, tunnel identity and credential behavior. Review/commit initialization or migration with the local CLI while OFF, or restart/refresh FIRST for the MCP alternative. With the object absent, this development source exposes 20 file/spreadsheet tools; enabled installations advertise 46 tools. The published v0.4.0 baseline used 14/27. Setup --second-brain enables tools without silently initializing. Migration creates WORKFLOW.md only if missing.
 
 Existing file tools can access notes. List roots, read Projects `Archives/INDEX.md`, then the selected project's index/Knowledge and linked Sources. Prefer memory_projects and scoped memory_search. Pending/superseded claims are not accepted current knowledge. Raw file operations bypass the memory transaction coordinator; prefer memory tools for multi-note updates.
 
@@ -75,3 +75,7 @@ service\.venv\Scripts\python.exe service/test_memory_protocol.py
 ```
 
 The first suite uses disposable roots for source fidelity, evidence, duplicate/conflict handling, supersession/history, independent-session retrieval, metadata filters, bounded output, stale plans, crash/failure recovery, unrelated-edit preservation, path policy, read-only mode and competing processes. The protocol test copies server code into a temporary installation, exercises all five new tools and retrieves persistent knowledge through a second real stdio MCP process without credentials or a tunnel. Original service/tray tests remain required before deployment. No mutation test uses production roots.
+
+## Integrated source and task continuity
+
+This 0.6.0 development source includes thirteen context, incremental ingestion, workflow and archive tools alongside the existing file/spreadsheet/memory interfaces. [WORKFLOWS.md](WORKFLOWS.md) provides installation compatibility, explicit session-start prompts, reviewed import, client-tool handoffs, bounded execution and recovery. Historical validation below does not establish live account acceptance for this source.

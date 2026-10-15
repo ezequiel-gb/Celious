@@ -10,10 +10,11 @@ import tempfile
 import zipfile
 
 BASE = Path(__file__).resolve().parent
-MODULES = ['engine.py', 'server.py', 'second_brain.py', 'project_memory.py', 'memory_tools.py', 'spreadsheets.py']
+MODULES = ['engine.py', 'server.py', 'second_brain.py', 'project_memory.py', 'memory_tools.py', 'spreadsheets.py',
+           'operations_state.py', 'ingestion.py', 'workflows.py', 'workspace_tools.py']
 TESTS = ['test_service.py', 'test_tray.py', 'test_second_brain.py', 'test_project_memory.py',
-         'test_memory_protocol.py', 'test_spreadsheets.py']
-GUIDES = ['SPREADSHEETS.md', 'LICENSE', 'README.md', 'PROJECT-MEMORY.md', 'SECOND-BRAIN.md', 'INSTALLATION-A-TO-Z.md',
+         'test_memory_protocol.py', 'test_spreadsheets.py', 'test_workflows.py', 'test_workspace_protocol.py']
+GUIDES = ['SPREADSHEETS.md', 'WORKFLOWS.md', 'LICENSE', 'README.md', 'PROJECT-MEMORY.md', 'SECOND-BRAIN.md', 'INSTALLATION-A-TO-Z.md',
           'PROJECT-EXPLAINED.md', 'VALIDATION.md', 'SECURITY.md', 'PUBLISHING.md', 'TROUBLESHOOTING.md']
 
 def sha(data):

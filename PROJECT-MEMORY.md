@@ -32,7 +32,7 @@ Sources preserves accessible text, completeness/reference and body SHA-256. Know
 
 ## Fresh installation and reviewed initialization
 
-Commands are for Command Prompt from the extracted source folder. Follow INSTALLATION-A-TO-Z.md for prerequisites, account/tunnel access and private key handling. Current development setup has 14 filesystem and six spreadsheet tools (20 total). To opt into 33 tools:
+Commands are for Command Prompt from the extracted source folder. Follow INSTALLATION-A-TO-Z.md for prerequisites, account/tunnel access and private key handling. Current development setup has 14 file, six spreadsheet and thirteen integrated tools (33 total). To opt into 46 tools:
 
 ```bat
 py -3.12 setup.py --tunnel-id YOUR_TUNNEL_ID --second-brain --shortcuts
@@ -64,7 +64,7 @@ Turn the existing switch ON, enter the existing key privately if needed, refresh
 
 The pinned public v0.2 baseline is `1181f82fd6df5802cf5cc4317dd35ce3f42799b0`. Extract the complete new source into a SEPARATE folder. Do not use setup.py --replace-config to upgrade a configured installation. Public v0.2 lacks both the memory modules and the engine's absent-target expected-digest check.
 
-The source-only overlay refreshes the six core modules and their six service test scripts together, including the safe copied-server file protocol check. It preserves the launcher/tray, dependency environment and existing profiles. Test script bytes are included in the same overlay checkpoint and rollback as modules. Use the updated scripts rather than an older installed file-only test that assumes an obsolete tool catalogue.
+The source-only overlay refreshes ten core modules and eight matching service test scripts together, including copied-server protocol and integrated workflow checks. It preserves the launcher/tray, dependency environment, existing profiles and private operational state. Test script bytes are included in the same overlay checkpoint and rollback as modules. Use the updated scripts rather than an older installed test with an obsolete tool catalogue.
 
 The target must already have a matching requirements.lock.txt; missing or different locks require separate environment review. Do not copy a lock into an unqualified installation merely to pass that guard. A matching file identifies the intended dependency set, not necessarily the packages actually installed. Fresh installations use the pinned lock unchanged. For existing environments, run that installation's Python `-m pip check` and review `-m pip freeze` against the lock: pip check verifies dependency compatibility, not exact pin equality. A working older environment can be retained after explicit acceptance, but must not be described as lock-identical. Package changes require separate review and testing; this overlay never runs pip or automatically reconciles versions.
 
@@ -90,7 +90,7 @@ Next change directory to the EXISTING installation, run its Python `-m pip check
 
 Migration uses journaled copy-and-redirect writes. Original source/knowledge/history files are preserved byte-for-byte in the selected project. Old paths become navigation-only redirects, excluded from knowledge scanning; they preserve previous citations/wiki links without duplicating facts. The layout marker activates last. Incomplete transactions block cooperating readers until recovery. Old-layout proposals remain private evidence but cannot be replayed.
 
-In this development source, memory disabled exposes **20 tools: 14 file tools and six spreadsheet tools**. Enabled memory exposes **33 tools**, adding 13 memory endpoints. The published v0.4.0 baseline exposed 14/27; its package does not include the spreadsheet extension. No separate tunnel is created. Fresh installations use Archives with project folders directly inside it. Existing configured memory paths/layouts remain compatible; do not move them by hand. memory_projects reports the authoritative archive_root. A source upgrade preserves the configured location rather than silently relocating existing records.
+In this development source, memory disabled exposes **33 tools: 14 file, six spreadsheet and thirteen integrated tools**. Enabled memory exposes **46 tools**, adding 13 memory endpoints. The published v0.4.0 baseline exposed 14/27; its package does not include the spreadsheet extension. No separate tunnel is created. Fresh installations use Archives with project folders directly inside it. Existing configured memory paths/layouts remain compatible; do not move them by hand. memory_projects reports the authoritative archive_root. A source upgrade preserves the configured location rather than silently relocating existing records.
 
 ## Retrieval
 
@@ -100,7 +100,7 @@ In this development source, memory disabled exposes **20 tools: 14 file tools an
 | --- | --- |
 | Fresh v0.4 | Install with --second-brain, review empty initialization, inspect, turn ON/refresh and complete the first-use test below |
 | Public v0.2 | Verify full backup; use the separate-source upgrade.py overlay WITH the engine update; enable tools, review initialization/migration and verify unchanged existing files/profile |
-| Compatible v0.3 | Verify full backup; preserve the existing memory root/prefix and workflow; overlay the five modules, then review migration of legacy Sources/Knowledge/History |
+| Compatible v0.3 | Verify full backup; preserve the existing memory root/prefix and workflow; overlay the current ten core modules and matching tests, then review migration of legacy Sources/Knowledge/History |
 | Already initialized v0.4 | Do not rerun migration; inspect/retrieve and use ordinary project/archive workflows; any later source upgrade still needs backup/review |
 
 ### First-use memory test
@@ -208,8 +208,12 @@ Open the canonical folder as an Obsidian vault when installed. Relative wiki lin
 
 Run test_second_brain.py, test_project_memory.py, test_memory_protocol.py and original file/tray checks only in isolated configured roots. Project tests cover A/B/shared routing, supervised queue/rejection, identification limitations, scoped/cross/shared retrieval, supersession/history, exact plans, index repair, stale descriptors, interruptions, rollback and actual private-baseline migration when available. Public CI uses synthetic fixtures; private-baseline tests explicitly skip when unavailable.
 
-The current protocol test advertises 33 tools and invokes all 13 memory endpoints through initialization, project creation, identification, queue/resolve/reject, archive/commit/search, supersession, inspection and rebuild. A fresh second MCP process retrieves persisted project memory. It uses no real key/tunnel. Actual ChatGPT discovery/triggers require live checks; unit tests do not establish universal model autonomy.
+The current protocol test advertises 46 tools and invokes all 13 memory endpoints through initialization, project creation, identification, queue/resolve/reject, archive/commit/search, supersession, inspection and rebuild. A fresh second MCP process retrieves persisted project memory. It uses no real key/tunnel. Actual ChatGPT discovery/triggers require live checks; unit tests do not establish universal model autonomy.
 
-test_installation.py runs real setup in disposable fresh, public-v0.2 and pinned-v0.3 installations with fresh isolated environments, checksum-verified client downloads and pip check. It checks fresh opt-in/off 33/20 discovery, reviewed empty initialization, installation of the pinned public baseline, reviewed source upgrade, preserved config/profile/files and synthetic legacy migration/workflow preservation. No production roots, credentials or shortcuts are used. Git must contain the pinned baseline; CI fetches full history. Run package.py before test_package.py. The stabilised spreadsheet source passed this complete matrix. Exact release-candidate results are recorded against their source commit; see VALIDATION.md for the procedure, historical evidence and verification limits.
+test_installation.py runs real setup in disposable fresh, public-v0.2 and pinned-v0.3 installations with fresh isolated environments, checksum-verified client downloads and pip check. It checks fresh opt-in/off 46/33 discovery, reviewed empty initialization, installation of the pinned public baseline, reviewed source upgrade, preserved config/profile/files and synthetic legacy migration/workflow preservation. No production roots, credentials or shortcuts are used. Git must contain the pinned baseline; CI fetches full history. Run package.py before test_package.py. The stabilised spreadsheet source passed this complete matrix. Exact release-candidate results are recorded against their source commit; see VALIDATION.md for the procedure, historical evidence and verification limits.
 
 Official references: [MCP instructions/tool metadata and testing](https://developers.openai.com/plugins/build/mcp-server), [skills and model-selected activation](https://developers.openai.com/plugins/concepts/skills).
+
+## Integrated source and task continuity
+
+This 0.6.0 development source includes thirteen context, incremental ingestion, workflow and archive tools alongside the existing file/spreadsheet/memory interfaces. [WORKFLOWS.md](WORKFLOWS.md) provides installation compatibility, explicit session-start prompts, reviewed import, client-tool handoffs, bounded execution and recovery. Historical validation below does not establish live account acceptance for this source.
