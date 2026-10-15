@@ -75,3 +75,21 @@ The follow-up review corrected historical aliases to match whole path segments c
 The real installer scenario passed again with three independent environments: fresh memory opt-in, the pinned public-v0.2 source, and actual v0.3 source at a1cb1890cc0ee93c46dd979d2c79a44ccf9a141f. The v0.3 server first advertised 19 tools and archived synthetic evidence; the source overlay preserved exact custom configuration/profile bytes, then OFF/local CLI migration and 27-tool retrieval preserved all original source/knowledge bytes, custom prefix and CRLF workflow. Fresh initialization, disabled 14-tool discovery, v0.2 upgrade, both stdio workflows, hidden shutdown and fresh-environment suites passed: 46 unit cases passed and one expected private-fixture skip. Repeated installer suites are not additional unique cases.
 
 The Windows workflow now repeats the pinned v0.3 scenario as well as fresh/v0.2 checks. These results are local acceptance; the final pushed commit and PR must pass their own hosted checks. This source review did not redeploy the working installation. Package/history scans are repeated after the final commit, and exact commit/run/checksums are recorded in the owner's private publication report rather than a self-referential package hash.
+
+
+## Spreadsheet extension validation
+
+The spreadsheet extension adds six tools (20 without memory, 33 with memory).
+`python -m unittest discover -s service -p test_spreadsheets.py -v` exercises typed ODS/XLSX/CSV/TSV data,
+Unicode, dates, formulas/caches, repeated blank tails, merges, multiple sheets, ranges and pagination,
+duplicate/missing/type checks, conversion, edits, injection prevention, verified backup recovery,
+atomic failure, malformed input, root restrictions and real MCP calls using disposable roots.
+The existing memory protocol suite now copies the spreadsheet module when constructing a temporary server.
+Package and upgrade allowlists include it. No new dependencies are required.
+
+Run tests with a short writable TEMP/TMP path on Windows: deep paths can exceed Windows path limits,
+and restricted sandboxes may deny the operating-system hard-link fixture in `test_service.py`.
+That fixture denial is an environment limitation, not a passing security test. Spreadsheet tests
+also exercise the hard-link policy with a synthetic `st_nlink=2` file stat.
+Actual-workbook evidence, installation checkpoints and personal data remain outside public source.
+See SPREADSHEETS.md for limits, conversion losses, safe writes, rollback and reconnect requirements.

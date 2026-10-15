@@ -96,7 +96,7 @@ def main():
     parser.add_argument('--probe',type=Path)
     parser.add_argument('--initialize',action='store_true')
     parser.add_argument('--legacy',action='store_true')
-    parser.add_argument('--count',type=int,default=27)
+    parser.add_argument('--count',type=int,default=33)
     parser.add_argument('--cli',action='store_true')
     parser.add_argument('--seed-v03',type=Path)
     parser.add_argument('--expected-records',type=Path)
@@ -118,10 +118,10 @@ def main():
         run(python,BASE/'test_installation.py','--probe',fresh/'service','--initialize','--cli')
         config_path=fresh/'service/config.json'
         config=json.loads(config_path.read_text());config.pop('second_brain');config_path.write_text(json.dumps(config))
-        run(python,BASE/'test_installation.py','--probe',fresh/'service','--count','14')
+        run(python,BASE/'test_installation.py','--probe',fresh/'service','--count','20')
         run(python,fresh/'package.py')
         run(python,fresh/'test_package.py')
-        for name in ['test_service.py','test_tray.py','test_second_brain.py','test_project_memory.py','test_memory_protocol.py']:
+        for name in ['test_service.py','test_tray.py','test_second_brain.py','test_project_memory.py','test_memory_protocol.py','test_spreadsheets.py']:
             run(python,fresh/'service'/name)
         run(python,fresh/'service/tray.py','--self-test')
         legacy=workspace/'public baseline installation';legacy.mkdir()
@@ -166,7 +166,7 @@ def main():
             assert bundle.read('service/engine.py') != (BASE/'service/engine.py').read_bytes()
         run(old_python,'-m','pip','check')
         run(old_python,BASE/'test_installation.py','--probe',legacy/'service','--initialize','--legacy')
-        print('Real fresh install, opt-in/off 27/14 tools, public v0.2 source upgrade, preserved config/profile/files, verified overlay checkpoint, legacy byte migration and workflow preservation passed.',flush=True)
+        print('Real fresh install, opt-in/off 33/20 tools, public v0.2 source upgrade, preserved config/profile/files, verified overlay checkpoint, legacy byte migration and workflow preservation passed.',flush=True)
         v03=workspace/'v0.3 existing custom memory';v03.mkdir()
         archive=workspace/'memory-baseline.zip'
         run('git','-c','safe.directory='+BASE.as_posix(),'-C',BASE,'archive','--format=zip','--output',archive,MEMORY_BASELINE)
@@ -186,6 +186,6 @@ def main():
         run(v03_python,'-m','pip','check')
         run(v03_python,BASE/'test_installation.py','--probe',v03/'service','--initialize','--cli','--expected-records',manifest)
         assert not (Path(config['roots']['Projects']['path'])/'Archives').exists()
-        print('Pinned v0.3 19-tool archive -> source overlay -> OFF CLI migration -> 27-tool retrieval passed; custom prefix, config/profile, CRLF workflow and exact source/knowledge bytes preserved.',flush=True)
+        print('Pinned v0.3 19-tool archive -> source overlay -> OFF CLI migration -> 33-tool retrieval passed; custom prefix, config/profile, CRLF workflow and exact source/knowledge bytes preserved.',flush=True)
 
 if __name__=='__main__':main()

@@ -22,7 +22,7 @@ async def run():
         base = Path(temporary)
         service = base / 'service'
         service.mkdir()
-        for name in ['engine.py', 'server.py', 'second_brain.py', 'project_memory.py', 'memory_tools.py']:
+        for name in ['engine.py', 'server.py', 'second_brain.py', 'project_memory.py', 'memory_tools.py', 'spreadsheets.py']:
             shutil.copy2(Path(__file__).parent / name, service / name)
         for name in ['vault', 'projects']:
             (base/name).mkdir()
@@ -33,7 +33,7 @@ async def run():
         transport = StdioServerParameters(command=sys.executable, args=[str(service/'server.py')])
         async with Client(transport) as client:
             names = {t.name for t in (await client.list_tools()).tools}
-            assert len(names) == 27, names
+            assert len(names) == 33, names
             assert {'memory_search','memory_archive_preview','memory_commit','memory_inspect','memory_supersede_preview'} <= names
             initialization = unpack(await client.call_tool('memory_migrate_preview', {}))
             unpack(await client.call_tool('memory_commit', dict(plan_id=initialization['plan_id'], approved_sha256=initialization['plan_sha256'])))
@@ -94,7 +94,7 @@ async def run():
             assert not (await client.call_tool('read_document', dict(root='Vault', path='INDEX.md'))).is_error
             denied = await client.call_tool('read_document', dict(root='Projects', path='../outside'))
             assert denied.is_error
-        print('All 13 memory endpoints exercised across 27 advertised MCP tools: explicit project initialization/creation, scoped/cross retrieval, identification, queue/resolve/reject, exact commit, supersession, rebuild, integrity and a fresh-session read; original reads and traversal denial passed.')
+        print('All 13 memory endpoints exercised across 33 advertised MCP tools: explicit project initialization/creation, scoped/cross retrieval, identification, queue/resolve/reject, exact commit, supersession, rebuild, integrity and a fresh-session read; original reads and traversal denial passed.')
 
 
 if __name__ == '__main__':

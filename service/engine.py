@@ -105,7 +105,11 @@ class Files:
         ident = uuid.uuid4().hex
         folder = self.runtime / 'backups' / ident
         folder.mkdir(parents=True)
-        (folder / 'original.bin').write_bytes(p.read_bytes())
+        data = p.read_bytes()
+        saved = folder / 'original.bin'
+        saved.write_bytes(data)
+        if saved.read_bytes() != data:
+            raise OSError('Backup integrity verification failed')
         (folder / 'record.json').write_text(json.dumps({'root': root, 'path': relative, 'action': action}), 'utf-8')
         return ident
 
@@ -147,6 +151,8 @@ class Files:
             try:
                 with os.fdopen(fd, 'wb') as out:
                     out.write(data)
+                    out.flush()
+                    os.fsync(out.fileno())
                 self.mutation_path(root, relative)
                 if self.fingerprint(p) != current:
                     raise ValueError('File changed during write')
@@ -287,27 +293,20 @@ class Files:
         elif suffix == '.pdf':
             from pypdf import PdfReader
             text = '\n'.join(page.extract_text() or '' for page in PdfReader(p).pages)
-        elif suffix == '.xlsx':
-            from openpyxl import load_workbook
-            self._check_zip(p)
-            book = load_workbook(p, read_only=True, data_only=False, keep_links=False)
-            chunks, rows = [], 0
-            try:
-                for sheet in book:
-                    chunks.append('Sheet: ' + sheet.title)
-                    for row in sheet.iter_rows(values_only=True):
-                        chunks.append(' | '.join('' if v is None else str(v) for v in row))
-                        rows += 1
-                        if rows >= 10000:
-                            break
-                    if rows >= 10000:
-                        chunks.append('[stopped at 10000 rows]')
-                        break
-            finally:
-                book.close()
+        elif suffix in {'.ods', '.xlsx'}:
+            from spreadsheets import load
+            sheets = load(p)
+            chunks = []
+            for sheet in sheets:
+                chunks.append('Sheet: ' + sheet['name'])
+                rows = {}
+                for (r, c), value in sorted(sheet['cells'].items()):
+                    rows.setdefault(r, []).append(f'{c}=' + str(value.get('formula') or value['value']))
+                for row, values in rows.items():
+                    chunks.append(str(row) + ': ' + ' | '.join(values))
             text = '\n'.join(chunks)
         else:
-            raise ValueError('Supported: UTF-8 text, Markdown, DOCX, ODT, PDF text, XLSX. No OCR or legacy Office formats.')
+            raise ValueError('Supported: UTF-8 text, Markdown, DOCX, ODT, PDF text, ODS, XLSX. No OCR or legacy Office formats.')
         offset = max(0, offset)
         max_chars = min(50000, max(1, max_chars))
         self.audit('read', root, path)

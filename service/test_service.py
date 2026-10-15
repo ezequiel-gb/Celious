@@ -179,7 +179,7 @@ async def protocol_test():
     async with Client(transport) as client:
         tools = await client.list_tools()
         names = {x.name for x in tools.tools}
-        assert names == {'list_roots', 'list_directory', 'read_document', 'search_files', 'propose_write', 'propose_folder', 'propose_move',
+        assert names >= {'list_roots', 'list_directory', 'read_document', 'search_files', 'propose_write', 'propose_folder', 'propose_move',
                          'read_file_bytes', 'write_file', 'edit_file', 'create_directory', 'move_file', 'delete_file', 'restore_deleted'}, names
         result = await client.call_tool('list_roots', {})
         assert not result.is_error, result

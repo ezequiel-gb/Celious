@@ -2,12 +2,15 @@ from mcp.server import MCPServer
 from mcp.types import ToolAnnotations
 from mcp.server.mcpserver.exceptions import ToolError
 from engine import Files
+from spreadsheets import SpreadsheetError, register as register_spreadsheets
 from memory_tools import register as register_memory
 
 def invoke(fn, *args, **kwargs):
     try:
         return fn(*args, **kwargs)
     except PermissionError as error:
+        raise ToolError(str(error)) from None
+    except SpreadsheetError as error:
         raise ToolError(str(error)) from None
     except (ValueError, UnicodeError):
         raise ToolError('Invalid operation, unsupported document, or file conflict. Check supported formats and permissions.') from None
@@ -87,7 +90,7 @@ def list_directory(root: str, path: str = '') -> list[dict]:
 
 @mcp.tool(annotations=read)
 def read_document(root: str, path: str, offset: int = 0, max_chars: int = 20000) -> dict:
-    """Read UTF-8, Markdown, DOCX, ODT, PDF text or XLSX. Follow next_offset for remaining text. No OCR."""
+    """Read UTF-8, Markdown, DOCX, ODT, PDF text, ODS or XLSX. Follow next_offset for remaining text. No OCR."""
     return invoke(files.read, root, path, offset, max_chars)
 
 @mcp.tool(annotations=read)
@@ -110,6 +113,7 @@ def propose_move(root: str, path: str, destination: str) -> dict:
     """Prepare move/rename of a supported text file within one writable root. Local approval applies it."""
     return invoke(files.stage, 'move', root, path, destination=destination)
 
+register_spreadsheets(mcp, files, invoke, read, mutation)
 register_memory(mcp, files, invoke, read, mutation, stage)
 
 if __name__ == '__main__':
