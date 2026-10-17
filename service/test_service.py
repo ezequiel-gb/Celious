@@ -180,7 +180,7 @@ async def protocol_test():
         service = base / 'service'
         service.mkdir()
         for name in ['engine.py', 'server.py', 'spreadsheets.py', 'memory_tools.py', 'project_memory.py', 'second_brain.py',
-                     'operations_state.py', 'ingestion.py', 'workflows.py', 'workspace_tools.py']:
+                     'operations_state.py', 'ingestion.py', 'workflows.py', 'workspace_tools.py', 'authorization.py', 'diagnostics.py', 'connection_settings.py']:
             shutil.copy2(BASE / name, service / name)
         for name in ['Vault', 'Projects']:
             (base / name / 'Inbox').mkdir(parents=True)

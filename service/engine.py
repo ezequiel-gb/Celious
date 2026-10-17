@@ -10,6 +10,7 @@ import stat
 import tempfile
 import threading
 import uuid
+from authorization import require as require_approval
 import zipfile
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
@@ -23,6 +24,8 @@ LIMIT = 10 * 1024 * 1024
 class Files:
     def __init__(self, config=None, runtime=None):
         self.config = config or json.loads((BASE / 'config.json').read_text('utf-8-sig'))
+        if self.config.get('approval_mode', 'client') not in {'client', 'local'}:
+            raise ValueError('approval_mode must be client or local')
         self.runtime = Path(runtime or BASE / '.runtime')
         self.runtime.mkdir(exist_ok=True, parents=True)
         self.lock = threading.RLock()
@@ -90,7 +93,8 @@ class Files:
     def roots_info(self):
         direct = self.config.get('direct_operations', False)
         return {k: {'path': str(v['path']), 'writable': v.get('writable', False) and not self.config.get('read_only', False),
-                    'direct_operations': direct, 'deletion': 'recoverable' if direct else 'unavailable'} for k, v in self.roots.items()}
+                    'direct_operations': direct, 'approval_mode': self.config.get('approval_mode', 'client'),
+                    'deletion': 'recoverable' if direct else 'unavailable'} for k, v in self.roots.items()}
 
     def mutation_path(self, root, relative):
         if not self.config.get('direct_operations', False):
@@ -99,6 +103,7 @@ class Files:
         # A root or ancestor of another configured root cannot be changed.
         if any(v['path'].resolve().is_relative_to(p.resolve()) for v in self.roots.values()):
             raise PermissionError('Cannot modify an authorized root or its ancestor')
+        require_approval(self, root, p)
         return p
 
     def _backup(self, p, root, relative, action):

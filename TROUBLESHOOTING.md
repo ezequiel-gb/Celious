@@ -1,5 +1,7 @@
 # Troubleshooting learned during setup
 
+Start with **Diagnostics.cmd** (or the tray Diagnostics button). It reports local version/build identity, environment/lock status, static tools, configuration validity, tray status age and recovery inventories without creating application state. OFF is expected unavailability; local status is not live ChatGPT acceptance. For scope-approval refusal, the owner locally approves the intended directory with Diagnostics.cmd approve; do not disable root restrictions. See [consolidated operation](CONSOLIDATION.md).
+
 | Symptom | Resolution in this package |
 | --- | --- |
 | PowerShell says running scripts is disabled | Use Install.cmd and Start-Celious.cmd. They launch Python directly; changing global execution policy is unnecessary. |

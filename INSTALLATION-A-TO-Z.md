@@ -1,5 +1,7 @@
 # Celious Files: installation from A to Z
 
+The authoritative operational contract is [CONSOLIDATION.md](CONSOLIDATION.md). Fresh setup defaults to local expiring scope approval; direct mutation examples below require the owner to approve their disposable test folder first. Use Diagnostics.cmd for status, local approve/revoke commands, and explicit build/environment identity. Use a permanent standalone Python installation; a shared Codex environment is not the production base.
+
 This guide takes a new operator from an unconfigured Windows computer to a tested ChatGPT connection. Read [PROJECT-EXPLAINED.md](PROJECT-EXPLAINED.md) first for the purpose, architecture and limits.
 
 Published baseline: **v0.4.0**; this is the **0.6.0 integrated development source**. It exposes 33 tools without memory and 46 with memory, including thirteen integrated context/ingestion/workflow/archive tools. For fresh memory setup use setup.py --second-brain, then review/commit initialization as documented in [PROJECT-MEMORY.md](PROJECT-MEMORY.md). That guide gives the public-v0.2/private-v0.3 upgrade and separate OFF-CLI versus ON-MCP migration sequences. [WORKFLOWS.md](WORKFLOWS.md) covers project continuity and recovery. Do not use --replace-config as a source-upgrade shortcut.

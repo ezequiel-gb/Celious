@@ -15,6 +15,7 @@ import win32gui
 import winerror
 from connect import BASE, normalize_key, LOCAL_CONFIG
 from tray_core import Connection, RUNTIME
+from diagnostics import status as diagnostic_status
 
 ASSETS = BASE.parent / 'assets'
 PLUGIN = LOCAL_CONFIG.get('plugin_url', 'https://chatgpt.com/plugins')
@@ -98,7 +99,7 @@ class App:
         self.root.report_callback_exception = report_error
         self.root.withdraw()
         self.root.title('Celious')
-        self.root.geometry('420x340')
+        self.root.geometry('470x340')
         self.root.resizable(False, False)
         self.root.configure(bg='#111827')
         self.root.iconbitmap(str(ASSETS / 'celious-on.ico'))
@@ -120,7 +121,7 @@ class App:
         self.migrate.pack(pady=8)
         row = tk.Frame(self.root, bg='#111827')
         row.pack(pady=10)
-        for label, callback in [('Open ChatGPT', lambda: webbrowser.open(PLUGIN)), ('Connection log', self.open_log), ('Hide', self.root.withdraw)]:
+        for label, callback in [('Open ChatGPT', lambda: webbrowser.open(PLUGIN)), ('Diagnostics', self.diagnose), ('Connection log', self.open_log), ('Hide', self.root.withdraw)]:
             tk.Button(row, text=label, command=callback, bg='#1f2937', fg='#e5e7eb', relief='flat', padx=10, pady=6).pack(side='left', padx=4)
         self.detect_async()
         self.root.after(100, self.tick)
@@ -131,6 +132,14 @@ class App:
     def show(self):
         self.root.deiconify()
         self.root.lift()
+
+    def diagnose(self):
+        report = diagnostic_status(BASE)
+        summary = dict(version=report.get('version'), build=report['build'],
+                       configuration=report['configuration'], dependency_lock_matches=report['dependencies']['matches'],
+                       tools=report.get('tools', {}).get('count'), connection=report['connection'],
+                       errors=report['errors'])
+        messagebox.showinfo('Celious diagnostics', json.dumps(summary, indent=2), parent=self.root)
 
     def open_log(self):
         log = RUNTIME / 'tray-connection.log'

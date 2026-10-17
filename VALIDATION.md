@@ -1,5 +1,9 @@
 # Release validation
 
+## Consolidation validation contract
+
+The consolidation branch preserves the integrated 0.6.0 interface and adds local approval, read-only diagnostics, isolated-environment guards and packaged build identity. Run service/test_stabilisation.py alongside the existing suites and real file/memory/workspace protocols. Installer fixtures explicitly select client approval for automated mutations; local-mode denial/scope/revocation is tested separately. A passing local suite does not establish hosted CI or production account/GUI acceptance. Exact executed results and commit/artifact identities belong to the private delivery report, separate from historical results below.
+
 ## Integrated 0.6.0 development source
 
 The new behavioral suite is `service/test_workflows.py`; actual cross-process MCP acceptance is `service/test_workspace_protocol.py`. They cover incremental exports, source/project isolation, reviewed claims, stale plans, competing writes, resumable multi-file work, interruption reconciliation, typed workbooks, client artifact handoffs and reverse recovery. Run both with the locked interpreter after setup, alongside every existing service/package test and `test_installation.py`. Discovery is 33 tools without memory and 46 with memory. No hosted CI or production acceptance is inferred from local checks. Later sections retain historical baseline evidence.

@@ -23,7 +23,7 @@ async def run():
         service = base / 'service'
         service.mkdir()
         for name in ['engine.py', 'server.py', 'second_brain.py', 'project_memory.py', 'memory_tools.py', 'spreadsheets.py',
-                     'operations_state.py', 'ingestion.py', 'workflows.py', 'workspace_tools.py']:
+                     'operations_state.py', 'ingestion.py', 'workflows.py', 'workspace_tools.py', 'authorization.py', 'diagnostics.py', 'connection_settings.py']:
             shutil.copy2(Path(__file__).parent / name, service / name)
         for name in ['vault', 'projects']:
             (base/name).mkdir()

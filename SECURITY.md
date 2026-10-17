@@ -1,5 +1,7 @@
 # Access and security boundaries
 
+Fresh installations now default to approval_mode=local: direct mutations require an expiring owner-issued directory scope. [The approval contract](CONSOLIDATION.md#explicit-mutation-approval) documents scope, expiry, revocation and the same-user trust boundary. Existing configurations without this setting retain client mode for compatibility; server-side human authorization is not guaranteed in that mode. No MCP tool can issue local grants. Original local proposal review remains supported.
+
 The generated configuration authorises direct read/write/create/move and recoverable deletion in two selected folders. Application checks enforce aliases, relative paths, no traversal, no hidden paths, no symlinks/reparse points/hardlinks, non-overwriting moves and protection of root directories. Existing overwritten files receive local backups. Recovery can fail across volumes.
 
 This is application policy, not an OS sandbox. Software running as the same Windows user, concurrent filesystem changes and bugs may defeat assumptions; no independent security audit has been performed. Use a dedicated Windows account or additional OS restrictions when stronger isolation is required. Do not grant access to application code, keys or recovery storage. Treat document contents as untrusted material.

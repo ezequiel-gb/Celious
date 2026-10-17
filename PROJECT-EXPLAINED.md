@@ -18,7 +18,7 @@ A Markdown vault adds durable context. Project notes, decisions and next actions
 | Celious Files plugin | Present the server's tools in a conversation | ChatGPT plugin configuration |
 | Secure MCP Tunnel | Transport requests between OpenAI and the local client | OpenAI tunnel plus local client |
 | tunnel-client | Run the private connection and invoke the MCP server | Windows background process |
-| Celious MCP server | Expose 14 file tools, six spreadsheet tools and 13 opt-in memory tools; enforce file policy | Local Python process |
+| Celious MCP server | Expose 14 file tools, six spreadsheet tools, 13 workspace/workflow tools and 13 opt-in memory tools; enforce file policy | Local Python process |
 | Celious tray switch | Start, check and stop the local connection | Windows icon and small control panel |
 | Projects and Vault | Store the files you authorise | Selected local directories |
 
@@ -67,7 +67,7 @@ The tray controls availability. ON starts the local tunnel and server. Hiding th
 
 ## What the current source can do
 
-The 14 filesystem tools cover listing, document/binary reads, search, direct writes/edits, folders, moves, recoverable deletion/restoration and proposals. v0.4 optionally adds 13 memory endpoints for separate project collections, cited retrieval, read-only candidates, Inbox review, exact authorized commits, supersession/history and recovery. Current development setup exposes 33 tools; setup --second-brain enables 33 without silently initializing. Follow [PROJECT-MEMORY.md](PROJECT-MEMORY.md) for reviewed setup/upgrade/migration.
+The 14 filesystem tools cover listing, document/binary reads, search, writes/edits, folders, moves, recoverable deletion/restoration and proposals. Thirteen optional memory endpoints provide separate project collections, cited retrieval, candidates, Inbox review, exact reviewed commits and recovery. Thirteen workspace tools add durable workflows, supplied-source ingestion, context and ZIP operations. Setup exposes 33 tools; --second-brain enables 46 without silently initializing. Follow [PROJECT-MEMORY.md](PROJECT-MEMORY.md) for reviewed initialization/migration and [CONSOLIDATION.md](CONSOLIDATION.md) for local approval and deployment.
 
 The server extracts text from PDF, DOCX, ODT, ODS and XLSX files and reads ordinary text/code files. Six dedicated tools add typed ODS/XLSX/CSV/TSV inspection, bounded reads/searches, controlled writes/edits and explicit data-only conversion. See [SPREADSHEETS.md](SPREADSHEETS.md) for parameter details and feature-loss acknowledgements. It does not provide OCR or rich-document layout editing. Binary writes must contain valid bytes for the intended format. File write/read limits and format behaviour are in README.md.
 
@@ -81,7 +81,7 @@ These are application checks, not a separate Windows sandbox or independently au
 
 ## How this relates to the wider Celious project
 
-Published v0.4.0 contains the file-access layer, starter vault, desktop switch and opt-in project-aware Second Brain. The current development source adds spreadsheet processing. ChatGPT selects and sequences tool calls; the server does not persist general tasks, schedule workers, retrieve hidden conversation history or guarantee proactive tool activation. Memory transaction recovery applies to coordinated note updates, not arbitrary workflow execution.
+Published v0.4.0 contains the file-access layer, starter vault, desktop switch and opt-in project-aware Second Brain. This source retains spreadsheet processing and durable bounded workflows with supplied-source ingestion. ChatGPT selects tool calls; there is no background worker scheduler, hidden-history retrieval or guaranteed proactive invocation. Workflow recovery and memory transactions have distinct scopes; external side effects and accepted knowledge are not undone by file rollback.
 
 ## Developer map
 
@@ -96,6 +96,9 @@ Published v0.4.0 contains the file-access layer, starter vault, desktop switch a
 | service/project_memory.py | Project descriptors/layout, scoped records/search, reviewed migration, Inbox, candidates, supersession and indexes |
 | service/connect.py / tray_core.py / tray.py | Credential input, outbound tunnel, loopback readiness and hidden process-tree lifecycle |
 | service/review.py | Original optional filesystem proposal review; separate from exact memory-plan commits |
+| service/authorization.py | Owner-issued directory/time approval scopes, enforced through the shared mutation policy |
+| service/connection_settings.py | Pure configuration-first identity resolution with validated legacy profile fallback |
+| service/diagnostics.py / Diagnostics.cmd | Shared read-only version/build/environment/configuration/recovery status and explicit local approval commands |
 | package.py / test_package.py | Explicit public allowlist, history/privacy checks, deterministic package and tampering/recovery fixtures |
 | test_installation.py | Real disposable fresh install, pinned v0.2/v0.3 source upgrades and fresh-environment suites |
 | service/test_*.py / Windows workflow | File/tray/legacy/project/MCP acceptance and public CI |

@@ -1,5 +1,7 @@
 # Celious Files for Windows
 
+For the supported installation, configuration, approval and recovery contract, start with [consolidated operation](CONSOLIDATION.md). Use Install.cmd for installation, Start-Celious.cmd for normal tray operation, and Diagnostics.cmd for read-only status. Fresh installations require expiring local scope approval for direct mutations; legacy client-controlled mode is preserved explicitly. Source/build identity and production acceptance are separate from the 0.6.0 version label.
+
 Celious Files connects ChatGPT to selected local folders through an MCP file server and an outbound OpenAI Secure MCP Tunnel. A Windows tray switch starts and stops the connection without a terminal. Published baseline: v0.4.0. This development implementation reports 0.6.0 and adds integrated project context, incremental supplied-source ingestion, resumable workflows and reviewed client-tool handoffs. No 0.6.0 publication or production deployment is implied.
 
 See [integrated workflows, ingestion and recovery](WORKFLOWS.md) for the complete user procedure, exact limits and platform boundaries. Start each project session with `workspace_context`; inspect actual adapter availability with `integration_status`.

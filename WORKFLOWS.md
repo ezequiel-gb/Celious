@@ -1,5 +1,7 @@
 # Integrated project work
 
+Fresh installations use local approval scopes for direct filesystem changes, including workflow execution and memory commits. The owner grants appropriate directory scopes locally before the reviewed workflow; renew them before expiry if recovery is required. See [CONSOLIDATION.md](CONSOLIDATION.md) for the supported approval, diagnostics and deployment contract. Client-mode automation remains explicitly available.
+
 The 0.6.0 development implementation adds thirteen MCP tools to the existing service: 33 tools without optional memory, 46 with memory. Existing file, spreadsheet and memory tools retain their interfaces. No new dependency is needed. Memory remains layout version 4; discovery never initializes an archive.
 
 ## Start a conversation

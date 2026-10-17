@@ -3,6 +3,7 @@
   "plugin_url": "https://chatgpt.com/plugins",
   "read_only": false,
   "direct_operations": true,
+  "approval_mode": "local",
   "roots": {
     "Vault": {"path": "C:/CeliousData/Vault", "writable": true},
     "Projects": {"path": "C:/CeliousData/Projects", "writable": true}

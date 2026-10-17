@@ -142,14 +142,14 @@ def main():
         fresh=workspace/'fresh source with spaces';fresh.mkdir()
         for name in FILES:
             target=fresh/name;target.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(BASE/name,target)
-        run(sys.executable,fresh/'setup.py','--tunnel-id','tunnel_'+'0'*32,'--second-brain')
+        run(sys.executable,fresh/'setup.py','--tunnel-id','tunnel_'+'0'*32,'--second-brain','--approval-mode','client')
         initial_config=(fresh/'service/config.json').read_bytes()
         initial_profile=(fresh/'service/.runtime/profiles/celious.yaml').read_bytes()
         refused=subprocess.run([sys.executable,str(fresh/'setup.py'),'--tunnel-id','tunnel_'+'0'*32,'--second-brain'],capture_output=True)
         assert refused.returncode != 0
         assert (fresh/'service/config.json').read_bytes()==initial_config
         assert (fresh/'service/.runtime/profiles/celious.yaml').read_bytes()==initial_profile
-        run(sys.executable,fresh/'setup.py','--tunnel-id','tunnel_'+'0'*32,'--second-brain','--replace-config')
+        run(sys.executable,fresh/'setup.py','--tunnel-id','tunnel_'+'0'*32,'--second-brain','--replace-config','--approval-mode','client')
         assert (fresh/'service/config.json').read_bytes()==initial_config
         assert (fresh/'service/.runtime/profiles/celious.yaml').read_bytes()==initial_profile
         print('Existing installation refuses unapproved repeat setup; explicit reconfiguration refreshes its profile without a collision.',flush=True)
@@ -164,7 +164,7 @@ def main():
         run(python,BASE/'test_installation.py','--probe',fresh/'service','--count','33')
         run(python,fresh/'package.py')
         run(python,fresh/'test_package.py')
-        for name in ['test_service.py','test_tray.py','test_second_brain.py','test_project_memory.py','test_memory_protocol.py','test_spreadsheets.py','test_workflows.py','test_workspace_protocol.py']:
+        for name in ['test_service.py','test_tray.py','test_second_brain.py','test_project_memory.py','test_memory_protocol.py','test_spreadsheets.py','test_workflows.py','test_workspace_protocol.py','test_stabilisation.py']:
             run(python,fresh/'service'/name)
         run(python,fresh/'service/tray.py','--self-test')
         legacy=workspace/'public baseline installation';legacy.mkdir()

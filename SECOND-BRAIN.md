@@ -1,6 +1,6 @@
 # Celious Second Brain
 
-**Memory layout: version 4; proposed source release: v0.5.0.** Use [Project memory: fresh setup, upgrades and reviewed initialization](PROJECT-MEMORY.md) for the complete procedure and current 46-tool schema. Historical v0.3 source remains in Git; current instructions retain the v0.4 project-memory format without a new memory migration.
+**Memory layout: version 4; current development source: v0.6.0.** Use [Project memory: fresh setup, upgrades and reviewed initialization](PROJECT-MEMORY.md) for the complete procedure and current 46-tool schema. Historical v0.3 source remains in Git; current instructions retain the v0.4 project-memory format without a new memory migration. Local approval scopes apply to initialization, coordinated updates and recovery; see [CONSOLIDATION.md](CONSOLIDATION.md).
 
 Celious can archive supplied conversation text, keep evidence separate from reusable claims, retrieve cited context, and supersede decisions without losing their history. This extension makes no network or model calls and starts no worker. ChatGPT provides the reasoning and proposed extraction; local code checks evidence, paths and conflicts.
 
@@ -26,7 +26,7 @@ Follow the complete verified-backup/upgrade procedure in PROJECT-MEMORY.md. The 
 "second_brain": {"root": "Projects", "path": "Archives", "flat_projects": true}
 ```
 
-Keep all existing roots, permissions, tunnel identity and credential behavior. Review/commit initialization or migration with the local CLI while OFF, or restart/refresh FIRST for the MCP alternative. With the object absent, this development source exposes 20 file/spreadsheet tools; enabled installations advertise 46 tools. The published v0.4.0 baseline used 14/27. Setup --second-brain enables tools without silently initializing. Migration creates WORKFLOW.md only if missing.
+Keep all existing roots, permissions, tunnel identity and credential behavior. Review/commit initialization or migration with the local CLI while OFF, or restart/refresh FIRST for the MCP alternative. With the object absent, this development source exposes 33 file/spreadsheet/workspace tools; enabled installations advertise 46 tools. The published v0.4.0 baseline used 14/27. Setup --second-brain enables tools without silently initializing. Migration creates WORKFLOW.md only if missing.
 
 Existing file tools can access notes. List roots, read Projects `Archives/INDEX.md`, then the selected project's index/Knowledge and linked Sources. Prefer memory_projects and scoped memory_search. Pending/superseded claims are not accepted current knowledge. Raw file operations bypass the memory transaction coordinator; prefer memory tools for multi-note updates.
 

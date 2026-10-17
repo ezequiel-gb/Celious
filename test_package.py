@@ -8,6 +8,7 @@ import json
 from contextlib import redirect_stdout
 import io
 import runpy
+import sys
 import shutil
 import zipfile
 from package import scan,sources,verify,BASE
@@ -20,13 +21,15 @@ class PackageTests(unittest.TestCase):
         service = Path(temporary.name) / 'service'
         service.mkdir()
         shutil.copy2(BASE/'service/connect.py', service/'connect.py')
+        shutil.copy2(BASE/'service/connection_settings.py', service/'connection_settings.py')
         (service/'config.json').write_text(json.dumps(config), 'utf-8')
         if profile is not None:
             profiles = service/'.runtime/profiles'
             profiles.mkdir(parents=True)
             (profiles/'celious.yaml').write_text(profile, 'utf-8')
         before = {p.relative_to(service):p.read_bytes() for p in service.rglob('*') if p.is_file()}
-        namespace = runpy.run_path(str(service/'connect.py'), run_name='launcher_fixture')
+        with patch('sys.path', [str(service), *sys.path]):
+            namespace = runpy.run_path(str(service/'connect.py'), run_name='launcher_fixture')
         self.assertEqual(before, {p.relative_to(service):p.read_bytes() for p in service.rglob('*') if p.is_file() and p.suffix != '.pyc'})
         return namespace
 

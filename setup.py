@@ -54,12 +54,19 @@ def main():
     parser.add_argument('--startup', action='store_true', help='Also start the tray OFF at Windows login')
     parser.add_argument('--replace-config', action='store_true', help='Explicitly replace an existing local configuration')
     parser.add_argument('--second-brain', action='store_true', help='Enable memory tools; initialization still requires a reviewed plan')
+    parser.add_argument('--approval-mode', choices=['local', 'client'], default='local',
+                        help='Local expiring scope approval (default), or explicitly trusted client-controlled mutations')
     args = parser.parse_args()
     if os.name != 'nt' or struct.calcsize('P') != 8 or sys.version_info < (3, 12):
         parser.error('Use 64-bit Python 3.12 or later on Windows; Python 3.12 is the tested version')
     config_file = BASE / 'service' / 'config.json'
     if config_file.exists() and not args.replace_config:
         parser.error('Already configured. Use --replace-config only when intentionally changing roots or tunnel')
+    python = BASE / 'service' / '.venv' / 'Scripts' / 'python.exe'
+    environment = python.parents[1] / 'pyvenv.cfg'
+    if python.exists() and (not environment.is_file() or
+            'include-system-site-packages = false' not in environment.read_text().lower()):
+        parser.error('Existing environment is not isolated. Stage a fresh installation; do not reuse a shared environment')
     tunnel = args.tunnel_id or input('Your tunnel ID (not an API secret): ').strip()
     if not re.fullmatch(r'tunnel_[a-z0-9]{32}', tunnel):
         parser.error('Expected tunnel_ followed by 32 lowercase letters or digits')
@@ -68,7 +75,7 @@ def main():
     for root in [projects, vault]:
         if root == BASE or BASE.is_relative_to(root):
             parser.error('Do not authorize the installation directory or its parent: it contains credentials in memory, logs and recovery data')
-        for private in [BASE / 'service', BASE / 'tools', BASE / 'assets', BASE / '.github']:
+        for private in [BASE / 'service', BASE / 'tools', BASE / 'assets', BASE / '.github', BASE / 'python']:
             if root.is_relative_to(private) or private.is_relative_to(root):
                 parser.error('Authorized folders must be separate from application code and runtime files')
     if projects.is_relative_to(vault) or vault.is_relative_to(projects):
@@ -87,16 +94,21 @@ def main():
         file = vault / name
         if not file.exists():
             file.write_text(content, 'utf-8')
-    python = BASE / 'service' / '.venv' / 'Scripts' / 'python.exe'
     if not python.exists():
         print('Creating isolated virtual environment ...', flush=True)
         venv.EnvBuilder(with_pip=True, system_site_packages=False).create(python.parents[1])
+    else:
+        # Recover a previously interrupted bootstrap without replacing the environment.
+        run(python, '-m', 'ensurepip', '--upgrade', '--default-pip')
+    if not environment.is_file() or 'include-system-site-packages = false' not in environment.read_text().lower():
+        parser.error('Existing environment is not isolated. Stage a fresh installation; do not reuse a shared environment')
     run(python, '-m', 'pip', 'install', '-r', BASE / 'service' / 'requirements.lock.txt')
     run(python, '-m', 'pip', 'check')
     download_client()
     config = {
         'tunnel_id': tunnel, 'plugin_url': args.plugin_url,
         'read_only': False, 'direct_operations': True,
+        'approval_mode': args.approval_mode,
         'roots': {'Vault': {'path': vault.as_posix(), 'writable': True},
                   'Projects': {'path': projects.as_posix(), 'writable': True}},
     }
@@ -120,6 +132,7 @@ def main():
         run(python, BASE / 'service' / 'install_tray.py', *(['--startup'] if args.startup else []))
     print('Local installation ready. Open Start-Celious.cmd and enter your runtime key privately.')
     print('Configuration enables direct read/write and recoverable delete in ONLY Projects and Vault.')
+    print('Approval mode: ' + args.approval_mode + '. Use service/diagnostics.py for status and local approval scopes.')
 
 
 if __name__ == '__main__':
