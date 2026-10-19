@@ -18,7 +18,10 @@ def parse(data):
     if re.search(br'<!\s*(DOCTYPE|ENTITY)', data, re.I):
         raise ValueError('Document entities and DTDs are unsupported')
     try:
-        return XML.fromstring(data, XML.XMLParser(resolve_entities=False, no_network=True, load_dtd=False))
+        tree = XML.fromstring(data, XML.XMLParser(resolve_entities=False, no_network=True, load_dtd=False))
+        if tree.getroottree().docinfo.doctype:
+            raise ValueError('Document entities and DTDs are unsupported')
+        return tree
     except XML.XMLSyntaxError:
         raise ValueError('Invalid document XML') from None
 
@@ -34,7 +37,7 @@ def package(data, editing=False):
             or any(e.flag_bits & 1 or e.filename.startswith(('/', '\\')) or '..' in e.filename.replace('\\', '/').split('/') for e in entries)):
         bundle.close()
         raise ValueError('Encrypted, duplicated, oversized or unsafe document package')
-    if editing and any('vbaproject' in n.lower() or '_xmlsignatures/' in n.lower() or 'documentsignatures.xml' in n.lower() for n in names):
+    if editing and any('vbaproject' in n.lower() or '_xmlsignatures/' in n.lower() or 'documentsignatures.xml' in n.lower() or n.lower().startswith(('basic/', 'scripts/')) for n in names):
         bundle.close()
         raise ValueError('Signed or macro-bearing documents cannot be edited safely')
     return bundle
@@ -50,7 +53,8 @@ def parts(bundle, suffix, reading=False):
             return ['content.xml']  # Preserve legacy extraction-only fixtures; edits require a full package.
         if not {'mimetype', 'META-INF/manifest.xml', 'content.xml'} <= set(bundle.namelist()):
             raise ValueError('Missing ODT package parts')
-        if bundle.read('mimetype').decode() != MIME or b'encryption-data' in bundle.read('META-INF/manifest.xml'):
+        manifest = parse(bundle.read('META-INF/manifest.xml'))
+        if bundle.read('mimetype').decode() != MIME or any(isinstance(n.tag, str) and n.tag.rsplit('}',1)[-1] == 'encryption-data' for n in manifest.iter()):
             raise ValueError('Unsupported or encrypted ODT')
         return ['content.xml']
     raise ValueError('Document recipes and formatted edits support DOCX and ODT')
@@ -74,7 +78,9 @@ def tokens(paragraph, suffix):
         def visit(node):
             if node.text: result.append((node, 'text', node.text))
             for child in node:
-                if child.tag == '{'+T+'}s':
+                if not isinstance(child.tag, str):
+                    pass  # XML comments/processing instructions are not visible paragraph text.
+                elif child.tag == '{'+T+'}s':
                     count = int(child.get('{'+T+'}c', '1'))
                     if not 1 <= count <= 10000: raise ValueError('Invalid ODT space repetition')
                     result.append((child, None, ' '*count))
@@ -99,6 +105,8 @@ def edit(data, suffix, old, new):
         raise ValueError('ODT replacement uses ordinary single spaces; explicit repeated-space editing is unsupported')
     with package(data, editing=True) as bundle:
         trees = {name: parse(bundle.read(name)) for name in parts(bundle, suffix)}
+        if suffix == '.odt' and any(n.tag == '{'+O+'}scripts' for tree in trees.values() for n in tree.iter()):
+            raise ValueError('Script-bearing documents cannot be edited safely')
         found = []
         for name, tree in trees.items():
             for paragraph in paragraphs(tree, suffix):

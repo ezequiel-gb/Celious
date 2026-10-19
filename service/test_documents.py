@@ -104,6 +104,17 @@ class DocumentTests(unittest.TestCase):
         self.assertIn('new',extract(changed,'.docx'))
         with self.assertRaises(ValueError): edit(repack(data,'word/document.xml',xml),'.docx','Continuity','new')
         with self.assertRaises(ValueError): parse(b'<!DOCTYPE x [<!ENTITY y SYSTEM "file:///private">]><x>&y;</x>')
+        with self.assertRaises(ValueError): parse(('<?xml version="1.0" encoding="UTF-16"?><!DOCTYPE x [<!ENTITY y "hidden">]><x>&y;</x>').encode('utf-16'))
+        odt=create(RECIPE,'.odt')
+        with zipfile.ZipFile(io.BytesIO(odt)) as source:
+            xml=source.read('content.xml').replace(b'retain evidence',b'retain<!-- private comment --> evidence')
+        self.assertNotIn('private comment',extract(repack(odt,'content.xml',xml),'.odt'))
+        manifest='<?xml version="1.0" encoding="UTF-16"?><manifest xmlns="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0"><encryption-data/></manifest>'.encode('utf-16')
+        with self.assertRaises(ValueError): edit(repack(odt,'META-INF/manifest.xml',manifest),'.odt','retain evidence','new')
+        with self.assertRaises(ValueError): edit(repack(odt,'Basic/Standard/module.xml',b'opaque'),'.odt','retain evidence','new')
+        with zipfile.ZipFile(io.BytesIO(odt)) as source:
+            xml=source.read('content.xml').replace(b'<office:body>',b'<office:scripts/><office:body>')
+        with self.assertRaises(ValueError): edit(repack(odt,'content.xml',xml),'.odt','retain evidence','new')
         with self.assertRaises(PermissionError): self.files.write('Project','../outside.docx',RECIPE,'document')
         self.files.config['read_only']=True
         with self.assertRaises(PermissionError): self.files.write('Project','blocked.odt',RECIPE,'document')
