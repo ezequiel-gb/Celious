@@ -140,8 +140,11 @@ class Files:
                 if len(content) > LIMIT * 4 // 3 + 8:
                     raise ValueError('File exceeds 10 MB')
                 data = base64.b64decode(content, validate=True)
+            elif encoding == 'document':
+                from documents import create
+                data = create(content, p.suffix.lower())
             else:
-                raise ValueError('Encoding must be utf-8 or base64')
+                raise ValueError('Encoding must be utf-8, base64 or document (DOCX/ODT recipe)')
             if len(data) > LIMIT or (p.exists() and (not p.is_file() or p.stat().st_size > LIMIT)):
                 raise ValueError('Writes and overwritten files are limited to 10 MB')
             if not p.parent.is_dir():
@@ -175,6 +178,13 @@ class Files:
             if not p.is_file() or p.stat().st_size > LIMIT:
                 raise ValueError('Edit requires a UTF-8 file below 10 MB')
             data = p.read_bytes()
+            if p.suffix.lower() in {'.docx', '.odt'}:
+                from documents import edit
+                digest = hashlib.sha256(data).hexdigest()
+                if expected_sha256 is not None and digest != expected_sha256:
+                    raise ValueError('File changed before edit')
+                changed = edit(data, p.suffix.lower(), old_text, new_text)
+                return self.write(root, relative, base64.b64encode(changed).decode('ascii'), 'base64', expected_sha256=digest)
             text = data.decode('utf-8')
             if not old_text or text.count(old_text) != 1:
                 raise ValueError('old_text must occur exactly once')
@@ -291,10 +301,8 @@ class Files:
             doc = Document(p)
             text = '\n'.join([x.text for x in doc.paragraphs] + [' | '.join(c.text for c in row.cells) for t in doc.tables for row in t.rows])
         elif suffix == '.odt':
-            self._check_zip(p)
-            with zipfile.ZipFile(p) as z:
-                tree = ET.fromstring(z.read('content.xml'))
-                text = '\n'.join(''.join(e.itertext()) for e in tree.iter() if e.tag.rsplit('}', 1)[-1] in {'p', 'h'})
+            from documents import extract
+            text = extract(p.read_bytes(), suffix)
         elif suffix == '.pdf':
             from pypdf import PdfReader
             text = '\n'.join(page.extract_text() or '' for page in PdfReader(p).pages)

@@ -105,7 +105,7 @@ ChatGPT -> OpenAI tunnel -> hidden tunnel-client -> stdio MCP server -> authoris
 
 The server supports directory listing, text/document extraction, search, paginated base64 reads, UTF-8/base64 writes, exact-text edits, folder creation, moves, recoverable deletion and restoration. Optional proposed changes can be reviewed locally using `service/review.py`.
 
-PDF, DOCX, ODT, ODS and XLSX reads extract content; they are not OCR or full document-layout editors. Overwriting a rich document should use a valid binary payload. Writes are limited to 10 MB per call. Paths must be relative to a configured root alias. Root deletion, traversal, hidden paths, Windows special paths, symlinks, junctions and hard-linked files are blocked by application policy.
+PDF, DOCX, ODT, ODS and XLSX reads extract content; they are not OCR or full document-layout editors. Existing write/edit tools also create structured DOCX/ODT files and replace unique paragraph text while preserving surrounding styles; see [DOCUMENTS.md](DOCUMENTS.md) for recipes and safe editing limits. Other rich formats require valid binary payloads. Writes are limited to 10 MB per call. Paths must be relative to a configured root alias. Root deletion, traversal, hidden paths, Windows special paths, symlinks, junctions and hard-linked files are blocked by application policy.
 
 Backups, trash and metadata logs are private local files under `service/.runtime`. Recovery is provided through `restore_deleted`; nonempty-folder deletion requires `recursive=true`. Moving items into recovery storage requires the same volume; a root on a different drive can therefore be read/written but deletion may fail. Test this before depending on recovery across drive boundaries.
 

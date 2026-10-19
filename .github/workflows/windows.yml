@@ -44,3 +44,6 @@ jobs:
           .\service\.venv\Scripts\python.exe service/test_workspace_protocol.py
       - name: Local approval and read-only diagnostics
         run: .\service\.venv\Scripts\python.exe service/test_stabilisation.py
+
+      - name: Document workflows
+        run: .\service\.venv\Scripts\python.exe service/test_documents.py

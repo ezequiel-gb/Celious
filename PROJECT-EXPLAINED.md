@@ -59,7 +59,7 @@ Use actual configured aliases and relative paths. These examples use synthetic n
 | Recover | “Recover only deletion ID returned for my synthetic test file with restore_deleted.” | Restore if original path is free |
 | Stage instead | “Use propose_write for this Markdown change; show the diff and leave it pending.” | Proposal; local review.py applies/rejects |
 
-Rich-document extraction is not a formatted editing workflow. For a valid DOCX/XLSX/PDF write, supply a valid binary payload within limits. Recoverable deletion is private recovery storage, not permanent purge or the Windows Recycle Bin. Memory changes should use the coordinated memory endpoints rather than raw-file edits.
+DOCX/ODT creation and selective paragraph editing use existing write/edit tools; [DOCUMENTS.md](DOCUMENTS.md) defines recipes and formatting limits. Other rich formats require valid binary payloads or their dedicated spreadsheet tools. Recoverable deletion is private recovery storage, not permanent purge or the Windows Recycle Bin. Memory changes should use the coordinated memory endpoints rather than raw-file edits.
 
 You ask: “Use Celious Files to read Projects/Example/status.md and change the deadline to Friday.” ChatGPT reads the file through a tool, requests an exact-text edit and receives its result. The server checks that the root exists, is writable and contains the allowed relative path. It saves the previous content before updating the file. You can inspect the result directly in Windows.
 

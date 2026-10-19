@@ -57,12 +57,12 @@ def read_file_bytes(root: str, path: str, offset: int = 0, max_bytes: int = 6553
 
 @mcp.tool(annotations=mutation)
 def write_file(root: str, path: str, content: str, encoding: str = 'utf-8', expected_sha256: str | None = None) -> dict:
-    """Create or overwrite any file up to 10 MB, directly. Content is UTF-8 text or base64. Existing files are backed up."""
+    """Create/overwrite up to 10 MB with backups. encoding: utf-8, base64, or document for DOCX/ODT JSON {title?,blocks:[{type:paragraph|heading,text,level?}|{type:table,rows:[[text]]}]}."""
     return invoke(files.write, root, path, content, encoding, expected_sha256)
 
 @mcp.tool(annotations=mutation)
 def edit_file(root: str, path: str, old_text: str, new_text: str, expected_sha256: str | None = None) -> dict:
-    """Modify a UTF-8 file directly, replacing one exact unique occurrence. Creates a backup; preserves other bytes."""
+    """Replace one unique exact occurrence with backup. UTF-8 preserves other bytes; DOCX/ODT edits one paragraph, preserving styles and other package parts. Formatted replacements must be single-line; fields/tracked changes are refused."""
     return invoke(files.edit, root, path, old_text, new_text, expected_sha256)
 
 @mcp.tool(annotations=stage)

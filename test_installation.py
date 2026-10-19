@@ -164,7 +164,7 @@ def main():
         run(python,BASE/'test_installation.py','--probe',fresh/'service','--count','33')
         run(python,fresh/'package.py')
         run(python,fresh/'test_package.py')
-        for name in ['test_service.py','test_tray.py','test_second_brain.py','test_project_memory.py','test_memory_protocol.py','test_spreadsheets.py','test_workflows.py','test_workspace_protocol.py','test_stabilisation.py']:
+        for name in ['test_service.py','test_tray.py','test_second_brain.py','test_project_memory.py','test_memory_protocol.py','test_spreadsheets.py','test_workflows.py','test_workspace_protocol.py','test_stabilisation.py','test_documents.py']:
             run(python,fresh/'service'/name)
         run(python,fresh/'service/tray.py','--self-test')
         legacy=workspace/'public baseline installation';legacy.mkdir()
