@@ -1,5 +1,17 @@
 # Release validation
 
+## v0.6.0 stable milestone
+
+Production-accepted executable source: `fcdbae8fd76c84fd6e9033ff674ddd994929d43a`. A later documentation-only publication commit preserves every application module, test, installer and dependency lock from that source. Package BUILD-IDENTITY.json records the exact publication commit and hashes; it must not be relabelled as the earlier accepted executable package.
+
+On the tested Windows x64 host with independent CPython 3.12.14, consolidation acceptance recorded all 109 installed service cases passing, ten package tests, both optional-memory modes, file/memory/workspace protocols, fresh installation and pinned upgrades. The exact consolidation-baseline upgrade and injected failed-upgrade restoration passed in disposable installations. One historical private-fixture case is intentionally skipped when its private fixture is absent from public source; private data is not distributed to make that case pass.
+
+Actual ChatGPT acceptance subsequently verified file creation/edit/search/move/deletion/restoration, native DOCX/ODT workflows, XLSX/ODS/CSV/TSV processing, attributed prior-session memory, workspace context, and reviewed workflow pause/resume/handoff/completion/rollback. Expiring local approval and traversal refusals were verified, and original data/configuration preservation was checked. These are results for the tested host and connection, not a guarantee of another operator's account access or universal Windows compatibility.
+
+Release publication separately requires exact-tip hosted Windows verification and package/history privacy checks. Record actual run URLs and final asset hashes in the release notes after those checks pass; historical evidence below is not a substitute. Authenticated GitHub actions, remote OneDrive synchronization and inaccessible account-history retrieval retain separate access/acceptance requirements. No unattended background execution or vector retrieval is claimed.
+
+The dependency inventory can report optional `odfpy` unavailable. It is not a locked requirement: supported ODS operations use the native ZIP/XML implementation and were exercised in the live spreadsheet acceptance.
+
 ## Consolidation validation contract
 
 The consolidation branch preserves the integrated 0.6.0 interface and adds local approval, read-only diagnostics, isolated-environment guards and packaged build identity. Run service/test_stabilisation.py alongside the existing suites and real file/memory/workspace protocols. Installer fixtures explicitly select client approval for automated mutations; local-mode denial/scope/revocation is tested separately. A passing local suite does not establish hosted CI or production account/GUI acceptance. Exact executed results and commit/artifact identities belong to the private delivery report, separate from historical results below.

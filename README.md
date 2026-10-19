@@ -2,13 +2,19 @@
 
 For the supported installation, configuration, approval and recovery contract, start with [consolidated operation](CONSOLIDATION.md). Use Install.cmd for installation, Start-Celious.cmd for normal tray operation, and Diagnostics.cmd for read-only status. Fresh installations require expiring local scope approval for direct mutations; legacy client-controlled mode is preserved explicitly. Source/build identity and production acceptance are separate from the 0.6.0 version label.
 
-Celious Files connects ChatGPT to selected local folders through an MCP file server and an outbound OpenAI Secure MCP Tunnel. A Windows tray switch starts and stops the connection without a terminal. Published baseline: v0.4.0. This development implementation reports 0.6.0 and adds integrated project context, incremental supplied-source ingestion, resumable workflows and reviewed client-tool handoffs. No 0.6.0 publication or production deployment is implied.
+Celious connects ChatGPT to selected local folders through one modular MCP server and an outbound OpenAI Secure MCP Tunnel. A Windows tray switch starts and stops the connection without a terminal. **v0.6.0 is a stable milestone in an actively developed project**, adding integrated project context, incremental supplied-source ingestion, resumable workflows and reviewed client-tool handoffs to the earlier filesystem and memory capabilities.
+
+The production-accepted application source is commit `fcdbae8fd76c84fd6e9033ff674ddd994929d43a`. Release documentation may have a later publication commit; application modules, dependency locks, installers and tests remain identical to that accepted source. Generated package metadata identifies the exact packaged commit and file hashes. See [validation](VALIDATION.md) and the release notes for the distinction.
+
+Celious supports secure file browsing/search, controlled file and native DOCX/ODT creation/editing, ODS/XLSX/CSV/TSV processing, portable attributed Markdown knowledge, project-specific context and durable workflows. Optional memory is enabled deliberately; workflows run only when explicitly invoked. External actions require separately authorised client tools and accounts. It does not fetch inaccessible conversation histories or provide unattended background supervision.
+
+Start with [MAINTENANCE.md](MAINTENANCE.md) for supported installation, upgrade and recovery, then [INSTALLATION-A-TO-Z.md](INSTALLATION-A-TO-Z.md) for account/tunnel and first-use details. The tested platform is Windows x64 with standalone CPython 3.12.14, Tcl/Tk and an isolated environment using the dependency lock. Each operator needs their own compatible ChatGPT/OpenAI access and tunnel. Choose narrow authorised roots; direct mutations require the configured approval controls. Do not use operational documents as test fixtures.
 
 See [integrated workflows, ingestion and recovery](WORKFLOWS.md) for the complete user procedure, exact limits and platform boundaries. Start each project session with `workspace_context`; inspect actual adapter availability with `integration_status`.
 
 ## Second Brain extension
 
-Version 0.4.0 adds physical project collections, stable project identities, explicit project/shared/cross-project retrieval, supervised Inbox routing and quote-backed candidate identification. It preserves v0.3.0 evidence, decision history and recovery. [Project memory setup, migration and limits](PROJECT-MEMORY.md). This development source exposes 14 filesystem, six spreadsheet and thirteen integrated tools (33 total); opt-in memory adds 13 endpoints (46 total) on the same service/tunnel. Identification depends on model/tool invocation; no continuous monitor, paid model API calls or background workers are added.
+Version 0.4.0 adds physical project collections, stable project identities, explicit project/shared/cross-project retrieval, supervised Inbox routing and quote-backed candidate identification. It preserves v0.3.0 evidence, decision history and recovery. [Project memory setup, migration and limits](PROJECT-MEMORY.md). This release exposes 14 filesystem, six spreadsheet and thirteen integrated tools (33 total); opt-in memory adds 13 endpoints (46 total) on the same service/tunnel. Identification depends on model/tool invocation; no continuous monitor, paid model API calls or background workers are added.
 
 The default single memory home is Projects/Archives, with project folders directly inside it. Existing explicitly configured roots/layouts remain compatible. Fresh setup: use setup.py --second-brain, then separately review and commit initialization. Existing public v0.2/private v0.3 installations: use the reviewed upgrade.py overlay from a separate source folder, with a verified full backup and actual connection OFF; the engine update is included. [Complete commands and sequencing](PROJECT-MEMORY.md#fresh-installation-and-reviewed-initialization). The public source does not include private notes, reports or operational data.
 
@@ -110,6 +116,10 @@ PDF, DOCX, ODT, ODS and XLSX reads extract content; they are not OCR or full doc
 Backups, trash and metadata logs are private local files under `service/.runtime`. Recovery is provided through `restore_deleted`; nonempty-folder deletion requires `recursive=true`. Moving items into recovery storage requires the same volume; a root on a different drive can therefore be read/written but deletion may fail. Test this before depending on recovery across drive boundaries.
 
 See [TROUBLESHOOTING.md](TROUBLESHOOTING.md), [SECURITY.md](SECURITY.md) and [PUBLISHING.md](PUBLISHING.md).
+
+## Continued development
+
+Version 0.6.0 provides a reproducible foundation for subsequent usability, integration and functionality improvements. New functionality requires its own reviewed scope, tests and release acceptance. Background supervision and vector retrieval are not provided by this milestone. No external service is operational merely because a handoff mechanism exists.
 
 ## Distribution
 

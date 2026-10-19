@@ -137,7 +137,7 @@ The service registers `workspace_tools` alongside file/spreadsheet/memory tools.
 
 ## Capability status and development priorities
 
-Status is specific to the tested source and environment. Existing code alone does not establish operational availability. The published baseline has 14/27 tools; this development source has 33/46 with memory disabled/enabled. [VALIDATION.md](VALIDATION.md) separates historical release evidence from current checks.
+Status is specific to the tested source and environment. Existing code alone does not establish operational availability. The historical v0.4.0 baseline had 14/27 tools; v0.6.0 has 33/46 with memory disabled/enabled. The accepted executable source and documentation-only publication identity are distinguished in the release notes. [VALIDATION.md](VALIDATION.md) separates historical release evidence from current checks.
 
 | Capability | Status and evidence | Practical limit |
 | --- | --- | --- |

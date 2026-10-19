@@ -4,7 +4,7 @@ The authoritative operational contract is [CONSOLIDATION.md](CONSOLIDATION.md). 
 
 This guide takes a new operator from an unconfigured Windows computer to a tested ChatGPT connection. Read [PROJECT-EXPLAINED.md](PROJECT-EXPLAINED.md) first for the purpose, architecture and limits.
 
-Published baseline: **v0.4.0**; this is the **0.6.0 integrated development source**. It exposes 33 tools without memory and 46 with memory, including thirteen integrated context/ingestion/workflow/archive tools. For fresh memory setup use setup.py --second-brain, then review/commit initialization as documented in [PROJECT-MEMORY.md](PROJECT-MEMORY.md). That guide gives the public-v0.2/private-v0.3 upgrade and separate OFF-CLI versus ON-MCP migration sequences. [WORKFLOWS.md](WORKFLOWS.md) covers project continuity and recovery. Do not use --replace-config as a source-upgrade shortcut.
+Stable milestone: **v0.6.0**, preserving the earlier v0.4.0 history. It exposes 33 tools without memory and 46 with memory, including thirteen integrated context/ingestion/workflow/archive tools. For fresh memory setup use setup.py --second-brain, then review/commit initialization as documented in [PROJECT-MEMORY.md](PROJECT-MEMORY.md). That guide gives the public-v0.2/private-v0.3 upgrade and separate OFF-CLI versus ON-MCP migration sequences. [WORKFLOWS.md](WORKFLOWS.md) covers project continuity and recovery. Do not use --replace-config as a source-upgrade shortcut.
 
 All commands below are for **Command Prompt**, unless stated otherwise. Do not paste your API secret into commands, ChatGPT, screenshots, GitHub or these documents. The setup command needs a tunnel ID; the secret belongs only in Celious's masked input window.
 
