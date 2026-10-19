@@ -135,6 +135,7 @@ class IntegratedTests(unittest.TestCase):
         status = self.workspace.health()
         self.assertEqual(status['memory']['status'], 'ready')
         self.assertEqual(status['adapters'][-1]['status'], 'handoff_only')
+        self.assertIn('build', status)
         self.assertNotIn('credential', json.dumps(status['dependencies']))
 
     def test_multi_file_write_edit_move_idempotence_and_reverse_recovery(self):

@@ -11,7 +11,7 @@ BASE = Path(__file__).resolve().parent
 FILES = ['LICENSE', 'README.md', 'TROUBLESHOOTING.md', 'SECURITY.md', 'PUBLISHING.md', 'VALIDATION.md',
          'SPREADSHEETS.md', 'WORKFLOWS.md', 'INSTALLATION-A-TO-Z.md', 'PROJECT-EXPLAINED.md', 'SECOND-BRAIN.md', 'PROJECT-MEMORY.md',
          '.gitignore', '.github/workflows/windows.yml', 'setup.py', 'upgrade.py', 'package.py', 'test_installation.py', 'test_package.py',
-         'Install.cmd', 'Start-Celious.cmd', 'Diagnostics.cmd', 'CONSOLIDATION.md', 'DOCUMENTS.md']
+         'Install.cmd', 'Start-Celious.cmd', 'Diagnostics.cmd', 'CONSOLIDATION.md', 'DOCUMENTS.md', 'MAINTENANCE.md']
 FILES += ['service/' + name for name in ['engine.py', 'server.py', 'spreadsheets.py', 'documents.py', 'test_spreadsheets.py', 'connect.py', 'tray_core.py',
           'tray.py', 'install_tray.py', 'review.py', 'test_service.py', 'test_tray.py',
           'requirements.txt', 'requirements.lock.txt', 'config.example.json',

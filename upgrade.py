@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import tempfile
@@ -14,7 +15,7 @@ MODULES = ['engine.py', 'server.py', 'second_brain.py', 'project_memory.py', 'me
            'operations_state.py', 'ingestion.py', 'workflows.py', 'workspace_tools.py', 'authorization.py', 'diagnostics.py', 'connection_settings.py']
 TESTS = ['test_service.py', 'test_tray.py', 'test_second_brain.py', 'test_project_memory.py',
          'test_memory_protocol.py', 'test_spreadsheets.py', 'test_workflows.py', 'test_workspace_protocol.py', 'test_stabilisation.py', 'test_documents.py']
-GUIDES = ['Diagnostics.cmd', 'CONSOLIDATION.md', 'DOCUMENTS.md', 'SPREADSHEETS.md', 'WORKFLOWS.md', 'LICENSE', 'README.md', 'PROJECT-MEMORY.md', 'SECOND-BRAIN.md', 'INSTALLATION-A-TO-Z.md',
+GUIDES = ['Diagnostics.cmd', 'CONSOLIDATION.md', 'DOCUMENTS.md', 'MAINTENANCE.md', 'SPREADSHEETS.md', 'WORKFLOWS.md', 'LICENSE', 'README.md', 'PROJECT-MEMORY.md', 'SECOND-BRAIN.md', 'INSTALLATION-A-TO-Z.md',
           'PROJECT-EXPLAINED.md', 'VALIDATION.md', 'SECURITY.md', 'PUBLISHING.md', 'TROUBLESHOOTING.md']
 
 def sha(data):
@@ -34,6 +35,26 @@ def replace(path, data):
         output.write(data)
     os.replace(temporary, path)
 
+
+def complete_build():
+    """Read a clean extracted package; never synthesize an installed build identity."""
+    from package import FILES, scan
+    try:
+        build = json.loads(checked(BASE/'BUILD-IDENTITY.json').read_text('utf-8'))
+        manifest = json.loads(checked(BASE/'PACKAGE-MANIFEST.json').read_text('utf-8'))
+    except (OSError, ValueError):
+        raise ValueError('Complete upgrade requires an extracted clean source package with build identity and manifest') from None
+    if build.get('dirty') is not False or not re.fullmatch(r'[a-f0-9]{40}', str(build.get('commit', ''))):
+        raise ValueError('Complete upgrade requires an identified clean commit')
+    data = {name: checked(BASE/name).read_bytes() for name in FILES}
+    hashes = {name: sha(value) for name, value in data.items()}
+    if manifest != hashes or build.get('files') != hashes or build.get('source_digest') != sha(json.dumps(hashes, sort_keys=True).encode()):
+        raise ValueError('Complete upgrade package hashes or membership mismatch')
+    for name, value in data.items():
+        scan(name, value)
+    data.update({name: checked(BASE/name).read_bytes() for name in ['PACKAGE-MANIFEST.json', 'BUILD-IDENTITY.json']})
+    return data
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--installation', type=Path, required=True)
@@ -41,6 +62,7 @@ def main():
     parser.add_argument('--enable-memory', action='store_true')
     parser.add_argument('--apply', action='store_true', help='Apply reviewed file/config overlay, never migrate notes')
     parser.add_argument('--connection-off', action='store_true', help='Operator confirms all clients for this installation are OFF')
+    parser.add_argument('--complete-build', action='store_true', help='Install all verified public package files and matching build identity; preserve private configuration/runtime/environment')
     args = parser.parse_args()
     live = checked(args.installation.absolute())
     backup = checked(args.backup_dir.absolute())
@@ -52,13 +74,17 @@ def main():
     excluded = [live, BASE, *(Path(r['path']).absolute() for r in config['roots'].values())]
     if any(backup.is_relative_to(p) or p.is_relative_to(backup) for p in excluded):
         parser.error('Backup folder must be outside the installation and authorized roots')
-    changes = {'service/'+name: checked(BASE/'service'/name).read_bytes() for name in MODULES+TESTS}
+    try:
+        changes = complete_build() if args.complete_build else {'service/'+name: checked(BASE/'service'/name).read_bytes() for name in MODULES+TESTS}
+    except ValueError as error:
+        parser.error(str(error))
     lock = checked(live/'service/requirements.lock.txt')
     if not lock.is_file():
         parser.error('Dependency lock missing; review the existing environment separately before this source-only overlay')
     if lock.read_text('utf-8-sig').splitlines() != (BASE/'service/requirements.lock.txt').read_text('utf-8-sig').splitlines():
         parser.error('Dependency lock differs; use a reviewed environment upgrade before this source-only overlay')
-    changes.update({name: checked(BASE/name).read_bytes() for name in GUIDES})
+    if not args.complete_build:
+        changes.update({name: checked(BASE/name).read_bytes() for name in GUIDES})
     if args.enable_memory and 'second_brain' not in config:
         config['second_brain'] = dict(root='Projects', path='Archives', flat_projects=True)
         changes['service/config.json'] = (json.dumps(config, indent=2)+'\n').encode()
@@ -70,7 +96,7 @@ def main():
         if status.get('state') != 'off' or status.get('busy'):
             parser.error('Switch this installation OFF before upgrade; do not edit status files')
     print(json.dumps(dict(changes={n:sha(d) for n,d in changes.items()}, memory_enabled='second_brain' in config,
-                         migration='not performed', applied=False), indent=2))
+                         migration='not performed', complete_build=args.complete_build, applied=False), indent=2))
     if not args.apply:
         return
     if not args.connection_off:

@@ -13,8 +13,62 @@ import shutil
 import zipfile
 from package import scan,sources,verify,BASE
 import upgrade
+import package
 
 class PackageTests(unittest.TestCase):
+    def complete_fixture(self, source):
+        files = ['service/server.py', 'service/requirements.lock.txt', 'README.md']
+        (source/'service').mkdir(parents=True)
+        for name, data in zip(files, [b'new server', b'fixed lock', b'new guide']):
+            (source/name).write_bytes(data)
+        hashes={name:hashlib.sha256((source/name).read_bytes()).hexdigest() for name in files}
+        build=dict(commit='a'*40,dirty=False,files=hashes,source_digest=hashlib.sha256(json.dumps(hashes,sort_keys=True).encode()).hexdigest())
+        (source/'BUILD-IDENTITY.json').write_text(json.dumps(build),'utf-8')
+        (source/'PACKAGE-MANIFEST.json').write_text(json.dumps(hashes),'utf-8')
+        return files,build
+
+    def test_complete_build_refuses_tampering_dirty_or_missing_identity(self):
+        with tempfile.TemporaryDirectory(prefix='celious-complete-package-') as temporary:
+            source=Path(temporary)/'source'
+            names,build=self.complete_fixture(source)
+            with patch.object(upgrade,'BASE',source),patch.object(package,'FILES',names):
+                self.assertEqual(set(upgrade.complete_build()),set(names)|{'BUILD-IDENTITY.json','PACKAGE-MANIFEST.json'})
+                (source/'README.md').write_bytes(b'tampered')
+                with self.assertRaisesRegex(ValueError,'hashes'): upgrade.complete_build()
+                (source/'README.md').write_bytes(b'new guide')
+                build['dirty']=True
+                (source/'BUILD-IDENTITY.json').write_text(json.dumps(build),'utf-8')
+                with self.assertRaisesRegex(ValueError,'clean commit'): upgrade.complete_build()
+                (source/'BUILD-IDENTITY.json').unlink()
+                with self.assertRaisesRegex(ValueError,'extracted clean'): upgrade.complete_build()
+
+    def test_complete_upgrade_preserves_private_state_and_recovers_failed_apply(self):
+        with tempfile.TemporaryDirectory(prefix='celious-complete-upgrade-') as temporary:
+            root=Path(temporary);source=root/'source';live=root/'installed';backup=root/'recovery'
+            names,build=self.complete_fixture(source)
+            (live/'service/.runtime').mkdir(parents=True)
+            (root/'projects').mkdir()
+            config=json.dumps(dict(roots=dict(Projects=dict(path=str(root/'projects'),writable=True)))).encode()
+            (live/'service/config.json').write_bytes(config)
+            (live/'service/.runtime/sentinel').write_bytes(b'private durable state')
+            (live/'service/requirements.lock.txt').write_bytes(b'fixed lock')
+            (live/'service/server.py').write_bytes(b'old server')
+            (live/'BUILD-IDENTITY.json').write_bytes(b'old identity')
+            original={str(p.relative_to(live)):p.read_bytes() for p in live.rglob('*') if p.is_file()}
+            argv=['upgrade.py','--installation',str(live),'--backup-dir',str(backup),'--complete-build','--apply','--connection-off']
+            replace=upgrade.replace
+            def fail_identity(path,data):
+                if path.name=='BUILD-IDENTITY.json' and data!=b'old identity': raise OSError('Injected identity-write failure')
+                replace(path,data)
+            with patch.object(upgrade,'BASE',source),patch.object(package,'FILES',names),patch('sys.argv',argv),redirect_stdout(io.StringIO()):
+                with patch.object(upgrade,'replace',fail_identity),self.assertRaises(OSError): upgrade.main()
+                self.assertEqual(original,{str(p.relative_to(live)):p.read_bytes() for p in live.rglob('*') if p.is_file()})
+                upgrade.main()
+            self.assertEqual((live/'service/config.json').read_bytes(),config)
+            self.assertEqual((live/'service/.runtime/sentinel').read_bytes(),b'private durable state')
+            self.assertEqual(json.loads((live/'BUILD-IDENTITY.json').read_text())['commit'],build['commit'])
+            self.assertTrue(all((live/name).read_bytes()==(source/name).read_bytes() for name in names))
+
     def launcher(self, config, profile=None):
         temporary = tempfile.TemporaryDirectory(prefix='celious-launcher-test-')
         self.addCleanup(temporary.cleanup)
