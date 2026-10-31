@@ -4,7 +4,7 @@ The distribution targets Windows 11, x64. It includes Celious Switch, the servic
 
 ## Before starting
 
-Prepare two separate data folders, one for Projects and one for your Vault. Keep them outside the extracted installation directory. Choose only folders the assistant should be allowed to access.
+Prepare two separate data folders, one for Projects and one for your Vault. Keep them outside the extracted installation directory. Choose only folders the assistant should be allowed to access. Use the same Windows drive as the installation when recoverable deletion is required; the existing recovery mechanism can refuse deletion across drives even when reading and writing work.
 
 The current ChatGPT connection requires an account/client with the supported MCP tunnel setup, a tunnel ID and the associated runtime connection key. Create these through the provider's supported connection flow. Credentials are user-provided; Celious does not create an account or bypass account eligibility requirements.
 
@@ -20,7 +20,7 @@ The current ChatGPT connection requires an account/client with the supported MCP
 For explicit setup options:
 
 ```bat
-"Configure Celious.cmd" --tunnel-id tunnel_YOUR32CHARACTERIDENTIFIERHERE00 --projects "D:\Knowledge\Projects" --vault "D:\Knowledge\Vault" --second-brain --approval-mode client --shortcuts
+"Configure Celious.cmd" --tunnel-id tunnel_YOUR32CHARACTERIDENTIFIERHERE00 --projects "C:\Knowledge\Projects" --vault "C:\Knowledge\Vault" --second-brain --approval-mode client --shortcuts
 ```
 
 Replace the placeholder with the exact valid tunnel ID provided by your account. `--shortcuts` creates Desktop and installation-folder shortcuts. `--startup` optionally adds the tray at Windows login with the connection **off**. These are standard Windows shortcuts; no replacement desktop shell is needed.
