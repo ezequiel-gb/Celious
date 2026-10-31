@@ -11,6 +11,9 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: read
     steps:
       - uses: actions/checkout@v4
       - run: node verify-showcase.mjs
