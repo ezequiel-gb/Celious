@@ -20,13 +20,19 @@ assert.equal(strings.es.contactButton,'Hablemos');
 assert.equal(strings.es.closingTitle,'Hablemos');
 assert.equal(strings.en.eyebrow,'DOCUMENTS · MEMORY · AI');
 assert.equal(strings.es.eyebrow,'DOCUMENTOS · MEMORIA · IA');
+assert(strings.en.metaDescription&&strings.es.metaDescription);
 assert.equal(strings.en.headlineSuffix,'Your Local Digital Second Brain');
 assert.equal(strings.es.headlineSuffix,'Tu segundo cerebro digital local');
 assert.equal(strings.en.practicalTitle,'What does this mean in practice?');
 assert.equal(strings.es.practicalTitle,'¿Y esto cómo se traduce en el día a día?');
+assert(js.includes('When your computer and Celious connection are running'));
+assert(js.includes('Cuando tu ordenador y la conexión de Celious están en funcionamiento'));
+assert(readme.includes('not publicly distributed as a free product'));
+assert(overview.includes('not publicly distributed as a free product'));
 for(const [,link] of html.matchAll(/(?:href|src)="([^"]+)"/g)){
  if(link.startsWith('https://')||link.startsWith('#'))continue;
- assert(existsSync(path.join(base,link)),`Missing local link: ${link}`);
+ const localPath=link.split(/[?#]/,1)[0];
+ assert(existsSync(path.join(base,localPath)),`Missing local link: ${link}`);
 }
 const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(([,id])=>id));
 assert.equal(ids.size,[...html.matchAll(/\bid="([^"]+)"/g)].length,'Duplicate HTML id');
