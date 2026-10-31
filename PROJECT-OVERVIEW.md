@@ -8,7 +8,7 @@ Project knowledge often sits across documents, spreadsheets and separate convers
 
 The design can support work such as finding project material, retrieving reviewed project context, inspecting a supported workbook and creating a local result. Similar digital systems can be adapted to an organisation's requirements, processes and operational challenges.
 
-For example, an assistant can find a project document, check a related spreadsheet and prepare an update to an authorised file. The change can be reviewed, and an important project decision can be saved to memory for a later conversation.
+For example, an assistant can find a project document, check a related spreadsheet and prepare an update to an authorised file. Review the file change before it is applied, then review and approve a project-memory record for a later conversation.
 
 ## Architecture
 
@@ -33,3 +33,4 @@ Celious is an example of the digital systems I design and develop. Similar solut
 
 - [Let's talk](https://ezequielgomez.net/index-en.html#contacto)
 - [Hablemos](https://ezequielgomez.net/index-es.html#contacto)
+

@@ -25,6 +25,13 @@ assert.equal(strings.en.headlineSuffix,'Your Local Digital Second Brain');
 assert.equal(strings.es.headlineSuffix,'Tu segundo cerebro digital local');
 assert.equal(strings.en.practicalTitle,'What does this mean in practice?');
 assert.equal(strings.es.practicalTitle,'¿Y esto cómo se traduce en el día a día?');
+assert(strings.en.practicalOne.includes('Review the file change before it is applied'));
+assert(strings.en.practicalOne.includes('review and approve an important decision before saving it to project memory'));
+assert(strings.es.practicalOne.includes('Revisa el cambio del archivo antes de aplicarlo'));
+assert(strings.es.practicalOne.includes('revisa y aprueba una decisión importante antes de guardarla en la memoria del proyecto'));
+assert(html.includes('Review the file change before it is applied'));
+assert(readme.includes('review and approve a project-memory record'));
+assert(overview.includes('review and approve a project-memory record'));
 assert(js.includes('When your computer and Celious connection are running'));
 assert(js.includes('Cuando tu ordenador y la conexión de Celious están en funcionamiento'));
 assert(readme.includes('not publicly distributed as a free product'));
@@ -61,3 +68,4 @@ assert(!/fetch\(|XMLHttpRequest|WebSocket|localStorage/.test(js),'Explorer must 
 for(const id of ['stage','pan-mode','view-toggle','zoom-in','zoom-out','reset-view','workflow','step-next','step-back'])assert(html.includes(`id="${id}"`),id);
 for(const id of ['contact-nav','contact-hero','contact-closing'])assert(html.includes(`id="${id}"`),id);
 console.log(`Showcase verified: ${files.length} files, matching EN/ES translations, live contact destinations, local links, interactive controls, no public app downloads or application source.`);
+

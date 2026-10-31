@@ -31,7 +31,7 @@ Celious currently integrates with ChatGPT. Its MCP architecture can support addi
 
 ## What this means in practice
 
-An assistant can find a project document, check a related spreadsheet and prepare an update to an authorised file. You can review that change and save an important decision to project memory for a later conversation.
+An assistant can find a project document, check a related spreadsheet and prepare an update to an authorised file. You can review the file change before it is applied, then review and approve a project-memory record for a later conversation.
 
 ## Commercial context
 
@@ -42,3 +42,4 @@ Celious is a working system and an example of the digital systems I design and d
 The public repository contains the project presentation and interactive explorer. The application implementation remains private and is not publicly distributed as a free product.
 
 [Project overview](PROJECT-OVERVIEW.md) · [License](LICENSE)
+
