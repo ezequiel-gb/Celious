@@ -29,12 +29,16 @@ Celious keeps the original knowledge base on the user's computer in portable for
 
 Celious currently integrates with ChatGPT. Its MCP architecture can support additional compatible clients, subject to integration work and testing.
 
+## What this means in practice
+
+An assistant can find a project document, check a related spreadsheet and prepare an update to an authorised file. You can review that change and save an important decision to project memory for a later conversation.
+
 ## Commercial context
 
-Celious is an example of the digital systems I design and develop. Similar solutions can be adapted to an organisation's specific requirements, processes and operational challenges.
+Celious is a working system and an example of the digital systems I design and develop. Similar solutions can be adapted to an organisation's specific requirements, processes and operational challenges.
 
-[Discuss a solution](https://ezequielgomez.net/index-en.html#contacto) · [Hablemos de una solución](https://ezequielgomez.net/index-es.html#contacto)
+[Let's talk](https://ezequielgomez.net/index-en.html#contacto) · [Hablemos](https://ezequielgomez.net/index-es.html#contacto)
 
-The public repository contains the project presentation and interactive explorer. The Celious application implementation is maintained privately.
+The public repository contains the project presentation and interactive explorer. The application implementation remains private and is not publicly distributed as a free product.
 
 [Project overview](PROJECT-OVERVIEW.md) · [License](LICENSE)

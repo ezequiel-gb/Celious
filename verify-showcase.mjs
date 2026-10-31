@@ -12,6 +12,18 @@ const overview=readFileSync(path.join(base,'PROJECT-OVERVIEW.md'),'utf8');
 const strings=Function(js.slice(0,js.indexOf('const components='))+';return copy;')();
 assert.deepEqual(Object.keys(strings.en).sort(),Object.keys(strings.es).sort());
 for(const [,key] of html.matchAll(/data-i="([^"]+)"/g))assert(strings.en[key]&&strings.es[key],key);
+assert.equal(strings.en.contactLink,"Let's talk");
+assert.equal(strings.en.contactButton,"Let's talk");
+assert.equal(strings.en.closingTitle,"Let's talk");
+assert.equal(strings.es.contactLink,'Hablemos');
+assert.equal(strings.es.contactButton,'Hablemos');
+assert.equal(strings.es.closingTitle,'Hablemos');
+assert.equal(strings.en.eyebrow,'DOCUMENTS · MEMORY · AI');
+assert.equal(strings.es.eyebrow,'DOCUMENTOS · MEMORIA · IA');
+assert.equal(strings.en.headlineSuffix,'Your Local Digital Second Brain');
+assert.equal(strings.es.headlineSuffix,'Tu segundo cerebro digital local');
+assert.equal(strings.en.practicalTitle,'What does this mean in practice?');
+assert.equal(strings.es.practicalTitle,'¿Y esto cómo se traduce en el día a día?');
 for(const [,link] of html.matchAll(/(?:href|src)="([^"]+)"/g)){
  if(link.startsWith('https://')||link.startsWith('#'))continue;
  assert(existsSync(path.join(base,link)),`Missing local link: ${link}`);
@@ -24,6 +36,7 @@ assert(js.includes('https://ezequielgomez.net/index-es.html#contacto'));
 assert(readme.includes('https://ezequielgomez.net/index-en.html#contacto'));
 assert(readme.includes('https://ezequielgomez.net/index-es.html#contacto'));
 for(const text of [html,js,readme,overview]){
+ assert(!/Discuss a solution|Hablemos de una solución/i.test(text),'Previous contact wording remains');
  assert(!/github\.com\/ezequiel-gb\/Celious\/releases/i.test(text),'Application release link remains');
  assert(!/Celious-Windows-x64|Download for Windows|Get Celious|Descargar para Windows|Obtener Celious|download.{0,30}Windows|descargar.{0,30}Windows/i.test(text),'Public application download call-to-action remains');
  assert(!/[A-Z]:[\\/](?:Users|Documents)[\\/]/i.test(text),'Personal filesystem path');
