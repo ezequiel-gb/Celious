@@ -7,6 +7,8 @@ function walk(dir){return readdirSync(dir).filter(n=>n!=='.git').flatMap(n=>{con
 const files=walk(base);
 const html=readFileSync(path.join(base,'index.html'),'utf8');
 const js=readFileSync(path.join(base,'explorer.js'),'utf8');
+const readme=readFileSync(path.join(base,'README.md'),'utf8');
+const overview=readFileSync(path.join(base,'PROJECT-OVERVIEW.md'),'utf8');
 const strings=Function(js.slice(0,js.indexOf('const components='))+';return copy;')();
 assert.deepEqual(Object.keys(strings.en).sort(),Object.keys(strings.es).sort());
 for(const [,key] of html.matchAll(/data-i="([^"]+)"/g))assert(strings.en[key]&&strings.es[key],key);
@@ -14,6 +16,21 @@ for(const [,link] of html.matchAll(/(?:href|src)="([^"]+)"/g)){
  if(link.startsWith('https://')||link.startsWith('#'))continue;
  assert(existsSync(path.join(base,link)),`Missing local link: ${link}`);
 }
+const ids=new Set([...html.matchAll(/\bid="([^"]+)"/g)].map(([,id])=>id));
+assert.equal(ids.size,[...html.matchAll(/\bid="([^"]+)"/g)].length,'Duplicate HTML id');
+for(const [,link] of html.matchAll(/href="#([^"]+)"/g))assert(ids.has(link),`Missing page anchor: ${link}`);
+assert(html.includes('https://ezequielgomez.net/index-en.html#contacto'));
+assert(js.includes('https://ezequielgomez.net/index-es.html#contacto'));
+assert(readme.includes('https://ezequielgomez.net/index-en.html#contacto'));
+assert(readme.includes('https://ezequielgomez.net/index-es.html#contacto'));
+for(const text of [html,js,readme,overview]){
+ assert(!/github\.com\/ezequiel-gb\/Celious\/releases/i.test(text),'Application release link remains');
+ assert(!/Celious-Windows-x64|Download for Windows|Get Celious|Descargar para Windows|Obtener Celious|download.{0,30}Windows|descargar.{0,30}Windows/i.test(text),'Public application download call-to-action remains');
+ assert(!/[A-Z]:[\\/](?:Users|Documents)[\\/]/i.test(text),'Personal filesystem path');
+ assert(!/sk-[A-Za-z0-9_-]{16,}|gh[pousr]_[A-Za-z0-9]{25,}/.test(text),'Credential-shaped text');
+}
+assert(!/Fresh installation|Configure Celious\.cmd|MCP Server\.cmd|--approval-mode/.test(overview),'Self-service application deployment instructions remain');
+assert(!existsSync(path.join(base,'INSTALLATION.md')),'Public installation guide remains');
 for(const file of files){
  assert(!/\.(?:py|pyd|pyc|zip|exe|lnk|docx|xlsx|pdf)$/i.test(file),'Unexpected implementation, package or project file');
  if(file.endsWith('.png')){assert.equal(path.basename(file),'celious-logo.png','Only approved logo is permitted');continue;}
@@ -23,4 +40,5 @@ for(const file of files){
 }
 assert(!/fetch\(|XMLHttpRequest|WebSocket|localStorage/.test(js),'Explorer must not access accounts or persist local data');
 for(const id of ['stage','pan-mode','view-toggle','zoom-in','zoom-out','reset-view','workflow','step-next','step-back'])assert(html.includes(`id="${id}"`),id);
-console.log(`Showcase verified: ${files.length} files, matching EN/ES translations, local links, interactive controls, no application source or private identifying text.`);
+for(const id of ['contact-nav','contact-hero','contact-closing'])assert(html.includes(`id="${id}"`),id);
+console.log(`Showcase verified: ${files.length} files, matching EN/ES translations, live contact destinations, local links, interactive controls, no public app downloads or application source.`);

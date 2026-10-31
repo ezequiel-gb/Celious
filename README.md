@@ -1,45 +1,40 @@
 <p align="center"><img src="assets/celious-logo.png" width="220" alt="Celious logo"></p>
 
-# Celious
+# Celious | Your Local Digital Second Brain
 
-Celious is a local digital second brain that connects documents, project knowledge and file operations to AI assistants through MCP.
+Celious is a local digital second brain I developed to connect AI assistants with documents, spreadsheets and persistent project knowledge.
 
-The knowledge base is stored on your computer in Markdown, JSON and ordinary document formats.
+It demonstrates how information can be organised, retrieved and used across conversations, turning existing knowledge into practical actions. Its architecture combines local information management, persistent memory, controlled file operations and AI integration through the Model Context Protocol (MCP).
 
-**[Explore Celious in English](https://ezequiel-gb.github.io/Celious/?lang=en)** · **[Explorar en español](https://ezequiel-gb.github.io/Celious/?lang=es)** · **[Windows downloads](https://github.com/ezequiel-gb/Celious/releases)**
+## What Celious demonstrates
 
-## Capabilities
+- **Local knowledge:** original documents and project information are kept in ordinary local folders.
+- **Project memory:** decisions, requirements, findings, source references and progress can carry across conversations.
+- **Documents and spreadsheets:** connected tools can find and process supported files within authorised folders.
+- **Workflows and recovery:** multi-step work records progress and supports reviewed recovery of supported file changes.
+- **AI integration:** ChatGPT communicates with the local service through MCP tools.
 
-- **Project memory:** preserve decisions, requirements, source references and progress for later conversations.
-- **Files and documents:** find, read, create and organise files; extract information from supported PDFs and Word documents.
-- **Spreadsheets:** inspect workbooks, read ranges, update cells and convert supported tabular formats without Microsoft Excel.
-- **Recovery:** retain operation records, overwrite backups and recoverably deleted files.
-- **Celious Switch:** start and stop the connection from the Windows tray.
+## Architecture explorer
 
-For example: ask a compatible assistant to find a project brief, inspect the related spreadsheet and prepare an updated local summary. Celious supplies the authorised tools and durable context; the assistant coordinates the request.
+Explore the interactive, bilingual architecture:
 
-## Local knowledge
+- [Explore Celious in English](https://ezequiel-gb.github.io/Celious/?lang=en)
+- [Explorar Celious en español](https://ezequiel-gb.github.io/Celious/?lang=es)
 
-Through the Model Context Protocol (MCP), compatible AI assistants retrieve relevant information and perform operations in configured folders. The original knowledge base remains on your computer.
+The explorer presents the 3D component view, accessible 2D view and guided workflows. It runs independently of a Celious service.
 
-Celious currently integrates with ChatGPT. MCP provides the interface for additional compatible AI clients. Access from a phone uses the connected assistant and the running Windows installation.
+## Local knowledge and AI
 
-Project memory uses portable Markdown and JSON alongside ordinary documents. The assistant retrieves project context through Celious's tools.
+Celious keeps the original knowledge base on the user's computer in portable formats. Through MCP, a compatible assistant can retrieve information and request operations within the configured access boundaries. Information returned to an assistant may be processed by its provider; the local originals remain stored on the computer.
 
-## Explore the architecture
+Celious currently integrates with ChatGPT. Its MCP architecture can support additional compatible clients, subject to integration work and testing.
 
-The **[interactive architecture explorer](https://ezequiel-gb.github.io/Celious/)** explains the connection from GPT and MCP to local files, spreadsheets, project memory, permissions and recovery.
+## Commercial context
 
-Select components, orbit, zoom and pan through the 3D-style scene, or choose the accessible 2D view. Guided workflows explain practical uses. English and Spanish are available throughout the explorer.
+Celious is an example of the digital systems I design and develop. Similar solutions can be adapted to an organisation's specific requirements, processes and operational challenges.
 
-Celious is primarily a backend system. The explorer explains how its components work together.
+[Discuss a solution](https://ezequielgomez.net/index-en.html#contacto) · [Hablemos de una solución](https://ezequielgomez.net/index-es.html#contacto)
 
-## Install on Windows
+The public repository contains the project presentation and interactive explorer. The Celious application implementation is maintained privately.
 
-Use the installation distribution from **[Releases](https://github.com/ezequiel-gb/Celious/releases)** and follow **[the installation guide](INSTALLATION.md)**. The package includes Celious Switch, the local service, a dedicated Python runtime and pinned dependencies. A separate Python installation, Microsoft Office and Seelen UI are not required.
-
-During setup, select your folders and configure your ChatGPT tunnel connection.
-
-The public repository contains the product presentation, explorer and user documentation. Application implementation and build tooling are maintained separately.
-
-[Installation and configuration](INSTALLATION.md) · [License](LICENSE)
+[Project overview](PROJECT-OVERVIEW.md) · [License](LICENSE)
